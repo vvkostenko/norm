@@ -6,7 +6,16 @@ import java.io.InputStream;
 import java.util.List;
 
 public interface LexemReader {
-    Lexem readOne(InputStream inputStream);
-    List<Lexem> readOneWithNext(InputStream inputStream, int count);
-    List<Lexem> readMany(InputStream inputStream, int count);
+    /**
+     * Считывает одну лексему
+     * @return считанную лексему  или null
+     */
+    Lexem readOne();
+
+    /**
+     * Считывает несколько лексем
+     * @param count количество считанных лексем
+     * @return коллекция лексем
+     */
+    List<Lexem> readMany(int count);
 }

@@ -59,5 +59,20 @@ public enum LexemType {
     /**
      * ;
      */
-    COMMA_DOT
+    COMMA_DOT,
+
+    /**
+     * идентификатор переменной
+     */
+    VAR_IDENTIFIER,
+
+    /**
+     * Целое число
+     */
+    NUMBER,
+
+    /**
+     * Конец файла
+     */
+    EOF
 }
