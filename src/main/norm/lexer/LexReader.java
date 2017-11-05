@@ -13,10 +13,6 @@ public class LexReader implements LexemReader {
         sc = new Scanner(is);
     }
 
-    public void updateInputStream(InputStream is) {
-        sc = new Scanner(is);
-    }
-
     public Lexem readOne() {
         return null;
     }

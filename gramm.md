@@ -1,6 +1,30 @@
 Norm Grammatic
 ==============
 
+# Лексемы
+
+```
+BOOL_SIGN ::= < | > | <= | >= | neq | and | or | eq
+SPACE ::= <space_symbol> | \n | \t
+TYPE ::= int
+BOOL_CONSTANT ::= true | false
+ARIPHMETIC_CONSTANT ::= + | - | * | /
+ROUND_BRAKED_OPEN ::= (
+ROUND_BRAKED_CLOSE ::= )
+FIGURED_BRAKED_OPEN ::= {
+FIGURED_BRAKED_CLOSE ::= }
+KEYWORD ::= array | if || while | else
+TWO_DOTS ::= :
+COMMA_DOT ::= ;
+VAR_IDENTIFIER ::= <LetterDigit>
+NUMBER ::= <Number>
+EOF ::= конец файла
+```
+
+
+Эскиз грамматики в БНФ
+=====
+
 # Contants
 ```
 <Letter> ::= a-z|A-Z
