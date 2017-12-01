@@ -58,8 +58,9 @@ EOF ::= конец файла
 <ArraySize> ::= ,<Number>|,<Number>,<Number>|<Empty>
 ```
 ## Примеры
-**Описание Переменной:** in variable1 = 123;
-**Задание массива:** array(int,15) arrayVarName;
+ + **Описание Переменной:** in variable1 = 123;
+
+ + **Задание массива:** array(int,15) arrayVarName;
 
 # Expressions 
 ## Boolean
