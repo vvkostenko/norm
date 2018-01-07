@@ -17,7 +17,6 @@ public class Hello {
         System.out.println(aloha.saySomething("el Presidente"));
     }
 
-
     public String saySomething(String name) {
         if (name == null)
             throw new IllegalArgumentException("Setup name");
