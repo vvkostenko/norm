@@ -27,6 +27,10 @@ public enum LexemType {
     ARIPHMETIC_CONSTANT,
 
     /**
+     * =
+     */
+    ASSIGNMENT_CONST,
+    /**
      * (
      */
     ROUND_BRAKED_OPEN,

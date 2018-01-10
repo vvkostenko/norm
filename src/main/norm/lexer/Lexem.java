@@ -5,6 +5,14 @@ public class Lexem {
     LexemType type;
     String value;
 
+    public Lexem(){}
+
+    public Lexem(LexemType _type, String _value)
+    {
+        type = _type;
+        value = _value;
+    }
+
     public LexemType getType() {
         return type;
     }

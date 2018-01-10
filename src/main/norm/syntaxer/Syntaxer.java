@@ -11,7 +11,7 @@ import java.util.Stack;
 public class Syntaxer
 {
     private LexemReader lexer;
-    private Stack<Lexem> stack;
+    private Stack<Lexem> stack = new Stack<Lexem>();
 
     public Syntaxer(LexemReader lr)
     {
