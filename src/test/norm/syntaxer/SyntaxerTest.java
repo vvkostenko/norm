@@ -75,14 +75,48 @@ public class SyntaxerTest {
 
     @Test
     public void testArray() {
-        // array(int, 5) arr; int var = arr[2];
+        // array(int, 5) arr; int var = arr(2);
         LexemReader lexemReader = new DummyLexer(
-
+                new Lexem(LexemType.KEYWORD, "array"),
+                new Lexem(LexemType.ROUND_BRAKED_OPEN, "("),
+                new Lexem(LexemType.TYPE, "int"),
+                new Lexem(LexemType.COMMA, ","),
+                new Lexem(LexemType.NUMBER, "5"),
+                new Lexem(LexemType.ROUND_BRAKED_CLOSE, ")"),
+                new Lexem(LexemType.VAR_IDENTIFIER, "arr"),
+                new Lexem(LexemType.COMMA_DOT, ";"),
+                new Lexem(LexemType.TYPE, "int"),
+                new Lexem(LexemType.VAR_IDENTIFIER, "var"),
+                new Lexem(LexemType.ASSIGNMENT_CONST, "="),
+                new Lexem(LexemType.VAR_IDENTIFIER, "arr"),
+                new Lexem(LexemType.ROUND_BRAKED_OPEN, "("),
+                new Lexem(LexemType.NUMBER, "2"),
+                new Lexem(LexemType.ROUND_BRAKED_CLOSE, ")"),
+                new Lexem(LexemType.COMMA_DOT, ";")
         );
         Syntaxer syntaxer = new Syntaxer(lexemReader);
         // <init> <ar_alloc> int 5 arr = <init> int a <index> arr 2
         OPS run = syntaxer.run();
         assertTrue(run.isValid());
         assertEquals(run.getSize(), 5 + 7);
+    }
+
+    public void testCompare() {
+        // a > b; c <= a;
+        LexemReader lexemReader = new DummyLexer(
+                new Lexem(LexemType.VAR_IDENTIFIER, "a"),
+                new Lexem(LexemType.COMPARE_SIGN, ">"),
+                new Lexem(LexemType.VAR_IDENTIFIER, "b"),
+                new Lexem(LexemType.COMMA_DOT, ";"),
+                new Lexem(LexemType.VAR_IDENTIFIER, "c"),
+                new Lexem(LexemType.COMPARE_SIGN, "<="),
+                new Lexem(LexemType.VAR_IDENTIFIER, "a"),
+                new Lexem(LexemType.COMMA_DOT, ";")
+
+        );
+        Syntaxer syntaxer = new Syntaxer(lexemReader);
+        OPS run = syntaxer.run();
+        assertTrue(run.isValid());
+        assertEquals(run.getSize(), 6);
     }
 }

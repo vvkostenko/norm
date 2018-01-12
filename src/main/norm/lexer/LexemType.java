@@ -2,14 +2,14 @@ package norm.lexer;
 
 public enum LexemType {
     /**
-     * < | > | <= | >= | neq | and | or | eq
+     * < | > | <= | >=
      */
-    BOOL_SIGN,
+    COMPARE_SIGN,
 
     /**
-     * <space_symbol> | \n | \t
+     * neq | and | or | eq
      */
-    SPACE,
+    BOOL_SIGN,
 
     /**
      * int
@@ -22,7 +22,7 @@ public enum LexemType {
     BOOL_CONSTANT,
 
     /**
-     * + | - | * | /
+     * + | - | * | / | %
      */
     ARIPHMETIC_CONSTANT,
 
@@ -30,6 +30,7 @@ public enum LexemType {
      * =
      */
     ASSIGNMENT_CONST,
+
     /**
      * (
      */
@@ -51,7 +52,7 @@ public enum LexemType {
     FIGURED_BRAKED_CLOSE,
 
     /**
-     * array | if | while | else
+     * array | if | while | else | sc | out
      */
     KEYWORD,
 
@@ -64,6 +65,11 @@ public enum LexemType {
      * ;
      */
     COMMA_DOT,
+
+    /**
+     * ,
+     */
+    COMMA,
 
     /**
      * идентификатор переменной
