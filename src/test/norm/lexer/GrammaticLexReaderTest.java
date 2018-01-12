@@ -54,7 +54,6 @@ public class GrammaticLexReaderTest {
         for (String lexemString : bools) {
             LexReader reader = new LexReader(new StringStream(lexemString));
             Lexem lexem = reader.readOne();
-            assertEquals(lexem.type, LexemType.SPACE);
             assertEquals(lexem.value, lexemString);
             //проверяем что всё полностью считал
             lexem = reader.readOne();
