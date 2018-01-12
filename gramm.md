@@ -106,5 +106,5 @@ COMMA ::= ,
 
 # Program (Start Non-Terminal)
 
-<Program> ::=  <Body>EOF
+<Program> ::=  <Body>EOF 
 
