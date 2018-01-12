@@ -101,8 +101,9 @@ public class SyntaxerTest {
         assertEquals(run.getSize(), 5 + 7);
     }
 
+    @Test
     public void testCompare() {
-        // a > b; c <= a;
+        // a > b; c <= 3;
         LexemReader lexemReader = new DummyLexer(
                 new Lexem(LexemType.VAR_IDENTIFIER, "a"),
                 new Lexem(LexemType.COMPARE_SIGN, ">"),
@@ -110,6 +111,27 @@ public class SyntaxerTest {
                 new Lexem(LexemType.COMMA_DOT, ";"),
                 new Lexem(LexemType.VAR_IDENTIFIER, "c"),
                 new Lexem(LexemType.COMPARE_SIGN, "<="),
+                new Lexem(LexemType.NUMBER, "3"),
+                new Lexem(LexemType.COMMA_DOT, ";")
+
+        );
+        Syntaxer syntaxer = new Syntaxer(lexemReader);
+        OPS run = syntaxer.run();
+        assertTrue(run.isValid());
+        assertEquals(run.getSize(), 6);
+    }
+
+    @Test
+    public void testBoolExpr()
+    {
+        // a or b; c eq a;
+        LexemReader lexemReader = new DummyLexer(
+                new Lexem(LexemType.VAR_IDENTIFIER, "a"),
+                new Lexem(LexemType.BOOL_SIGN, "or"),
+                new Lexem(LexemType.VAR_IDENTIFIER, "b"),
+                new Lexem(LexemType.COMMA_DOT, ";"),
+                new Lexem(LexemType.VAR_IDENTIFIER, "c"),
+                new Lexem(LexemType.BOOL_SIGN, "eq"),
                 new Lexem(LexemType.VAR_IDENTIFIER, "a"),
                 new Lexem(LexemType.COMMA_DOT, ";")
 
@@ -118,5 +140,46 @@ public class SyntaxerTest {
         OPS run = syntaxer.run();
         assertTrue(run.isValid());
         assertEquals(run.getSize(), 6);
+    }
+
+    @Test
+    public void testBlock() {
+        // if (a < 3): { a = 3; b = a; } else: { b = 1488; } a = 0;
+        LexemReader lexemReader = new DummyLexer(
+                new Lexem(LexemType.KEYWORD, "if"),
+                new Lexem(LexemType.ROUND_BRAKED_OPEN, "("),
+                new Lexem(LexemType.VAR_IDENTIFIER, "a"),
+                new Lexem(LexemType.COMPARE_SIGN, "<"),
+                new Lexem(LexemType.NUMBER, "3"),
+                new Lexem(LexemType.ROUND_BRAKED_CLOSE, ")"),
+                new Lexem(LexemType.TWO_DOTS, ":"),
+                new Lexem(LexemType.FIGURED_BRAKED_OPEN, "{"),
+                new Lexem(LexemType.VAR_IDENTIFIER, "a"),
+                new Lexem(LexemType.ASSIGNMENT_CONST, "="),
+                new Lexem(LexemType.NUMBER, "3"),
+                new Lexem(LexemType.COMMA_DOT, ";"),
+                new Lexem(LexemType.VAR_IDENTIFIER, "b"),
+                new Lexem(LexemType.ASSIGNMENT_CONST, "="),
+                new Lexem(LexemType.VAR_IDENTIFIER, "a"),
+                new Lexem(LexemType.COMMA_DOT, ";"),
+                new Lexem(LexemType.FIGURED_BRAKED_CLOSE, "}"),
+                new Lexem(LexemType.KEYWORD, "else"),
+                new Lexem(LexemType.TWO_DOTS, ":"),
+                new Lexem(LexemType.FIGURED_BRAKED_OPEN, "{"),
+                new Lexem(LexemType.VAR_IDENTIFIER, "b"),
+                new Lexem(LexemType.ASSIGNMENT_CONST, "="),
+                new Lexem(LexemType.NUMBER, "1488"),
+                new Lexem(LexemType.COMMA_DOT, ";"),
+                new Lexem(LexemType.FIGURED_BRAKED_CLOSE, "}"),
+                new Lexem(LexemType.VAR_IDENTIFIER, "a"),
+                new Lexem(LexemType.ASSIGNMENT_CONST, "="),
+                new Lexem(LexemType.NUMBER, "0"),
+                new Lexem(LexemType.COMMA_DOT, ";")
+        );
+        Syntaxer syntaxer = new Syntaxer(lexemReader);
+        OPS run = syntaxer.run();
+        assertTrue(run.isValid());
+        // TODO: Посчитать тут всё нормально
+        //assertEquals(run.getSize(), 322);
     }
 }

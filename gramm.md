@@ -3,9 +3,10 @@ Norm Grammatic
 
 # Лексемы
 
-```
-BOOL_SIGN ::= < | > | <= | >= | neq | and | or | eq
-SPACE ::= <space_symbol> | \n | \t
+LETTER ::= a-z|A-Z
+DIGIT ::=0|1|2|3|4|5|6|7|8|9
+COMPARE_SIGH ::= < | > | <= | >=
+BOOL_SIGN ::= neq | and | or | eq
 TYPE ::= int
 BOOL_CONSTANT ::= true | false
 ARIPHMETIC_CONSTANT ::= + | - | * | / | %
@@ -13,7 +14,7 @@ ROUND_BRAKED_OPEN ::= (
 ROUND_BRAKED_CLOSE ::= )
 FIGURED_BRAKED_OPEN ::= {
 FIGURED_BRAKED_CLOSE ::= }
-KEYWORD ::= array | if | while | else
+KEYWORD ::= array | if | while | else | sc | out
 TWO_DOTS ::= :
 COMMA_DOT ::= ;
 VAR_IDENTIFIER ::= <LetterDigit>
@@ -21,44 +22,39 @@ NUMBER ::= <Number>
 BOOL_SIGN ::= <BoolSign>
 ARPH_SIGN ::= <ArphSign>
 EOF ::= конец файла
-```
+ASSIGN ::= =
+COMMA ::= ,
+
 
 
 Эскиз грамматики в БНФ
 =====
 
 # Contants
-```
-<Letter> ::= a-z|A-Z
-<Digit> ::= 0|1|2|3|4|5|6|7|8|9
-<SpaceSymb> ::= \n| |\t|\r\n
-<Type> ::= int
+
+<Type> ::= TYPE
 <Empty> ::= 
-<BoolConst> ::= true | false
-<BoolSign> ::= < | > | <= | >= | neq | and | or | eq 
-<ArphSign> ::= + | - | * | /
-```
+<BoolConst> ::= BOOL_CONSTANT
+<BoolSign> ::= BOOL_SIGN
+<ArphSign> ::= ARIPHMETIC_CONSTANT
+
 # Simple Values
-```
-<RequiredSpace> ::= <SpaceSymb><Space>|<SpaceSymb>
-<Space> ::= <RequiredSpace>|<Empty>
+
 <Number> ::= <Digit><Number>|<Digit>
 <LetterDigit> ::= <Letter><LetterDigit> | <Digit><LetterDigit>
 <VariableName> ::= <Letter><LetterDigit>
-```
 
 # Definitions
-```
-<VariableDefinition> ::= <Type><RequiredSpace><Assignment>
-<Assignment> ::= <VariableName><Space> = <Space><VariableValue><Space>;
+<InitArray> ::= <KEYWORD><ROUND_BRAKED_OPEN><ArrayType><ArraySize><ROUND_BRACKET_CLOSE><VariableName>;
+<ArrayType> ::= <Type>
+<ArrayGetValue> ::= <VariableName><ROUND_BRAKED_OPEN><Digit><ROUND_BRAKED_CLOSE>
+
+<VariableDefinition> ::= <Type><Assignment>
+<Assignment> ::= <VariableName> <ASSIGN> <VariableValue>;
 <VariableValue> ::= <VariableName>|<Number>|<ArphExpr>|-<ArphExpr>
 
-<InitArray> ::= array(<Space><ArrayType><Space><ArraySize><Space>)<Space><VariableName><Space>;
-<ArrayType> ::= <Type>
-<ArraySize> ::= ,<Number>|,<Number>,<Number>|<Empty>
-```
 ## Примеры
- + **Описание Переменной:** in variable1 = 123;
+ + **Описание Переменной:** int variable1 = 123;
 
  + **Задание массива:** array(int,15) arrayVarName;
 
@@ -66,8 +62,8 @@ EOF ::= конец файла
 ## Boolean
 ```
 <BoolVal> ::= <BoolConst> | <Number> | <VariableName>
-<BoolExpr> ::= <BoolVal><Space><BoolSign><Space><BoolVal> | (<Space><BoolExpr><Space>) 
-	| <BoolExpr><Space><BoolSign><Space><BoolExpr> | <BoolConst>
+<BoolExpr> ::= <BoolVal><BoolSign><BoolVal> | <ROUND_BRAKED_OPEN><BoolExpr><ROUND_BRAKED_CLOSE>
+	| <BoolExpr><BoolSign><BoolExpr> | <BoolConst>
 ```
 ### Пример
 **Условные выражения выражение:** 
@@ -77,37 +73,38 @@ EOF ::= конец файла
 ## Ariphmetic
 ```
 <ArphVal> ::= <Number> | <VariableName> 
-<ArphExpr> ::= <ArphVal><Space><ArphSign><Space><ArphVal> | (<Space><ArphExpr><Space>)
-	| <ArphExpr><Space><ArphSign><Space><ArphEpr>
-```
+<ArphExpr> ::= <ArphVal><ArphSign><ArphVal> | <ROUND_BRAKED_OPEN><ArphExpr><ROUND_BRAKED_CLOSE>
+	| <ArphExpr><ArphSign><ArphEpr>
+
 ### Пример
  + a + 34
  + (45 % MOD) + 42
 
 ## Conditional
-```
-<Condition> ::= if<RequiredSpace><BoolExpr><Space>:<Space><ConditionalBody><Space>
-<ConditionalBody> ::= {<Body>} | {<Body>}<Space>else:<Space>{<Body>}
-```
+
+<Condition> ::= <KEYWORD><BoolExpr><TWO_DOTS><ConditionalBody>
+<ConditionalBody> ::= <FIGURED_BRAKED_OPEN><Body><FIGURED_BRAKED_CLOSE> | <FIGURE_BRAKED_OPEN><Body><FIGURE_BRAKED_CLOSE><KEYWORD><TWO_DOTS><<FIGURE_BRAKED_OPEN><Body><FIGURE_BRAKED_CLOSE>
+
 ### Пример
  + if 72 > radius: { radius = 72;}
- + if (a eq true): { raduis = 42:} else: { radius = 24: }
+ + if (a eq true): { raduis = 42;} else: { radius = 24; }
+
 ## Loop
-```
-<Loop> ::= while<RequiredSpace><BoolExpr><Space>:<LoopBody>
-<LoopBody> ::= {<Body>}
-```
+
+<Loop> ::= <KEYWORD><BoolExpr><TWO_DOTS><LoopBody>
+<LoopBody> ::= <FIGURED_BRAKED_OPEN><Body><FIGURED_BRAKED_CLOSE>
+
 ### Пример
  while a > 42: { a = a + 1; }
  
 # Body
-```
-<Body> ::= <Space> | <Assignment><BodyLine> | <Loop><BodyLine> | <Condition><BodyLine> 
+
+<Body> ::= <Assignment><BodyLine> | <Loop><BodyLine> | <Condition><BodyLine>
 	| <VariableDefinition><BodyLine>
-<BodyLine> ::= <Space> | <Body><BodyLine>
-```
+<BodyLine> ::= <Body><BodyLine>
+
 
 # Program (Start Non-Terminal)
-```
+
 <Program> ::=  <Body>EOF
-```
+
