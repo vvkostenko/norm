@@ -45,12 +45,12 @@ COMMA ::= ,
 <VariableName> ::= <Letter><LetterDigit>
 
 # Definitions
-<InitArray> ::= <KEYWORD><ROUND_BRAKED_OPEN><ArrayType><ArraySize><ROUND_BRACKET_CLOSE><VariableName>;
+<InitArray> ::= array(<ArrayType><ArraySize>)<VariableName>;
 <ArrayType> ::= <Type>
-<ArrayGetValue> ::= <VariableName><ROUND_BRAKED_OPEN><Digit><ROUND_BRAKED_CLOSE>
+<ArrayGetValue> ::= <VariableName>(<Digit>)
 
 <VariableDefinition> ::= <Type><Assignment>
-<Assignment> ::= <VariableName> <ASSIGN> <VariableValue>;
+<Assignment> ::= <VariableName> = <VariableValue>;
 <VariableValue> ::= <VariableName>|<Number>|<ArphExpr>|-<ArphExpr>
 
 ## Примеры
@@ -62,7 +62,7 @@ COMMA ::= ,
 ## Boolean
 ```
 <BoolVal> ::= <BoolConst> | <Number> | <VariableName>
-<BoolExpr> ::= <BoolVal><BoolSign><BoolVal> | <ROUND_BRAKED_OPEN><BoolExpr><ROUND_BRAKED_CLOSE>
+<BoolExpr> ::= <BoolVal><BoolSign><BoolVal> | (<BoolExpr>)
 	| <BoolExpr><BoolSign><BoolExpr> | <BoolConst>
 ```
 ### Пример
@@ -73,7 +73,7 @@ COMMA ::= ,
 ## Ariphmetic
 ```
 <ArphVal> ::= <Number> | <VariableName> 
-<ArphExpr> ::= <ArphVal><ArphSign><ArphVal> | <ROUND_BRAKED_OPEN><ArphExpr><ROUND_BRAKED_CLOSE>
+<ArphExpr> ::= <ArphVal><ArphSign><ArphVal> | (<ArphExpr>)
 	| <ArphExpr><ArphSign><ArphEpr>
 
 ### Пример
@@ -82,8 +82,8 @@ COMMA ::= ,
 
 ## Conditional
 
-<Condition> ::= <KEYWORD><BoolExpr><TWO_DOTS><ConditionalBody>
-<ConditionalBody> ::= <FIGURED_BRAKED_OPEN><Body><FIGURED_BRAKED_CLOSE> | <FIGURE_BRAKED_OPEN><Body><FIGURE_BRAKED_CLOSE><KEYWORD><TWO_DOTS><<FIGURE_BRAKED_OPEN><Body><FIGURE_BRAKED_CLOSE>
+<Condition> ::= if<BoolExpr>:<ConditionalBody>
+<ConditionalBody> ::= {<Body>}| {<Body>}else:{<Body>}
 
 ### Пример
  + if 72 > radius: { radius = 72;}
@@ -91,8 +91,8 @@ COMMA ::= ,
 
 ## Loop
 
-<Loop> ::= <KEYWORD><BoolExpr><TWO_DOTS><LoopBody>
-<LoopBody> ::= <FIGURED_BRAKED_OPEN><Body><FIGURED_BRAKED_CLOSE>
+<Loop> ::= while<BoolExpr>:<LoopBody>
+<LoopBody> ::= {<Body>}
 
 ### Пример
  while a > 42: { a = a + 1; }
@@ -106,5 +106,9 @@ COMMA ::= ,
 
 # Program (Start Non-Terminal)
 
-<Program> ::=  <Body>EOF 
+<Program> ::=  <Body>EOF
+
+# S/O
+
+<SO> ::= sc (<VAR_IDENTIFIER>) | out (VAR_IDENTIFIER>) | out(<NUMBER>)
 
