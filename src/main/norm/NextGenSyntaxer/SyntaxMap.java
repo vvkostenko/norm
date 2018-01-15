@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.locks.Condition;
 
 public class SyntaxMap {
-    private static class NonTerm
+    public static class NonTerm
     {
         String value;
 
@@ -18,7 +18,7 @@ public class SyntaxMap {
         }
     }
 
-    private static class Term{
+    public static class Term{
         TokenType type;
         String value;
 
@@ -163,4 +163,5 @@ public class SyntaxMap {
     private void add(NonTerm body, Object... list){
         rules.put(body, Arrays.asList(list));
     }
+
 }
