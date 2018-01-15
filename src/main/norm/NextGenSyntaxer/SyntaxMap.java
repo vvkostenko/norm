@@ -2,6 +2,12 @@ package norm.NextGenSyntaxer;
 
 import norm.lexer.TokenType;
 
+import javax.management.MBeanException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.locks.Condition;
+
 public class SyntaxMap {
     private static class NonTerm
     {
@@ -22,9 +28,12 @@ public class SyntaxMap {
         }
     }
 
+    HashMap<NonTerm, List<Object>> rules = new HashMap<>();
+
     // Non-terminals
     NonTerm Start = new NonTerm("S");
     NonTerm Body = new NonTerm("B");
+    NonTerm MegaBody = new NonTerm("MB");
     NonTerm Variative = new NonTerm("V");
     NonTerm Expression = new NonTerm("E");
     NonTerm Loop = new NonTerm("L");
@@ -76,4 +85,82 @@ public class SyntaxMap {
     Term trueKeyword = new Term(TokenType.BOOL_CONSTANT, "true");
     Term falseKeyword = new Term(TokenType.BOOL_CONSTANT, "false");
     Term VI = new Term(TokenType.VAR_IDENTIFIER, "");
+    Term NUM = new Term(TokenType.NUMBER, "");
+    Term intKeyword = new Term(TokenType.TYPE, "int");
+    Term comma = new Term(TokenType.COMMA, ",");
+
+    public void init(){
+        add(Start, Body);
+
+        add(Body, Variative, MegaBody);
+
+        add(MegaBody, Variative, MegaBody);
+        add(MegaBody, empty);
+
+        add(Variative, Assigment);
+        add(Variative, Loop);
+        add(Variative, Comparative);
+        add(Variative, Expression);
+
+        add(Expression, scKeyword, VarIdentifier);
+        add(Expression, outKeyword, VarIdentifier);
+        add(Expression, outKeyword, NUM);
+        add(Expression, arrayKeyword, roundBracOpen, intKeyword, comma, CIFRA, roundBracClosed, VI, commaDot);
+
+        add(Loop, whileKeyword, BoolExpression, doubleDot, figuredBracOpen, Body, figuredBracClosed);
+
+        add(Comparative, ifKeyword, BoolExpression, doubleDot, figuredBracOpen, Body, figuredBracClosed, MegaCopmparative);
+
+        add(MegaCopmparative, empty);
+        add(MegaCopmparative, elseKeyword, doubleDot, figuredBracOpen, Body, figuredBracClosed);
+
+        add(Assigment, Variable, ravno, Value, commaDot);
+
+        add(Variable, VI);
+        add(Variable, VI, roundBracOpen, Variable, roundBracClosed);
+
+        add(Value, CIFRA);
+        add(Value, AriphOp);
+
+        add(CIFRA, NUM);
+        add(CIFRA, Variable);
+
+        add(AriphOp, CIFRA, SIGA, CIFRA, MegaAriphOp);
+        add(AriphOp, roundBracOpen, AriphOp, roundBracClosed, MegaAriphOp);
+
+        add(MegaAriphOp, SIGA, AriphOp, MegaAriphOp);
+        add(MegaAriphOp, empty);
+
+        add(BoolExpression, BoolConst, MegaBoolExpr);
+        add(BoolExpression, CMP, MegaBoolExpr);
+        add(BoolExpression, roundBracOpen, BoolExpression, roundBracClosed, MegaBoolExpr);
+
+        add(MegaBoolExpr, SIGB, BoolExpression, MegaBoolExpr);
+        add(MegaBoolExpr, empty);
+
+        add(CMP, Value, SIGC, Value);
+
+        add(SIGA, plus);
+        add(SIGA, minus);
+        add(SIGA, razdelitto);
+        add(SIGA, umnojito);
+        add(SIGA, mod);
+
+        add(SIGB, or);
+        add(SIGB, and);
+        add(SIGB, eq);
+        add(SIGB, neq);
+
+        add(SIGC, more);
+        add(SIGC, less);
+        add(SIGC, moreRavno);
+        add(SIGC, lessRavno);
+
+        add(BoolConst, trueKeyword);
+        add(BoolConst, falseKeyword);
+    }
+
+    private void add(NonTerm body, Object... list){
+        rules.put(body, Arrays.asList(list));
+    }
 }
