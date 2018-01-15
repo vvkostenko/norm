@@ -13,19 +13,19 @@ public class LexReader implements LexemReader {
         sc = new Scanner(is);
     }
 
-    public Lexem readOne() {
+    public Token readOne() {
         return null;
     }
 
-    public List<Lexem> readMany(int count) {
+    public List<Token> readMany(int count) {
         if (count < 0)
             throw new IllegalArgumentException("Количество считываемых лексем должно быть больше нуля");
-        ArrayList<Lexem> list = new ArrayList<Lexem>(count);
+        ArrayList<Token> list = new ArrayList<Token>(count);
         for (int i = 0; i < count; i++) {
-            Lexem lexem = readOne();
-            if (lexem == null) break;
-            list.add(lexem);
-            if (lexem.type.equals(TokenType.EOF))
+            Token token = readOne();
+            if (token == null) break;
+            list.add(token);
+            if (token.type.equals(TokenType.EOF))
                 break;
         }
         return list;

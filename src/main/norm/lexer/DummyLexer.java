@@ -6,22 +6,22 @@ import java.util.List;
 
 public class DummyLexer implements LexemReader{
 
-    ArrayList<Lexem> lexems = new ArrayList<Lexem>();
+    ArrayList<Token> tokens = new ArrayList<Token>();
     int position = 0;
 
-    public DummyLexer(Lexem ... lexems) {
-        this.lexems.addAll(Arrays.asList(lexems));
+    public DummyLexer(Token... tokens) {
+        this.tokens.addAll(Arrays.asList(tokens));
     }
 
-    public Lexem readOne() {
-        if (position >= lexems.size()) {
-            return new Lexem().setValue("").setType(TokenType.EOF);
+    public Token readOne() {
+        if (position >= tokens.size()) {
+            return new Token().setValue("").setType(TokenType.EOF);
         } else {
-            return lexems.get(position++);
+            return tokens.get(position++);
         }
     }
 
-    public List<Lexem> readMany(int count) {
+    public List<Token> readMany(int count) {
         throw new NotImplemented();
     }
 }

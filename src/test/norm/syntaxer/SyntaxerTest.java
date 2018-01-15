@@ -1,7 +1,7 @@
 package norm.syntaxer;
 
 import norm.lexer.DummyLexer;
-import norm.lexer.Lexem;
+import norm.lexer.Token;
 import norm.lexer.LexemReader;
 import norm.lexer.TokenType;
 import org.junit.Before;
@@ -20,12 +20,12 @@ public class SyntaxerTest {
     public void testAriphmetic() {
         // a + b - 5;
         LexemReader lexemReader = new DummyLexer(
-                new Lexem(TokenType.VAR_IDENTIFIER, "a"),
-                new Lexem(TokenType.ARIPHMETIC_CONSTANT, "+"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "b"),
-                new Lexem(TokenType.ARIPHMETIC_CONSTANT, "-"),
-                new Lexem(TokenType.NUMBER, "5"),
-                new Lexem(TokenType.COMMA_DOT, ";")
+                new Token(TokenType.VAR_IDENTIFIER, "a"),
+                new Token(TokenType.ARIPHMETIC_CONSTANT, "+"),
+                new Token(TokenType.VAR_IDENTIFIER, "b"),
+                new Token(TokenType.ARIPHMETIC_CONSTANT, "-"),
+                new Token(TokenType.NUMBER, "5"),
+                new Token(TokenType.COMMA_DOT, ";")
         );
         Syntaxer syntaxer = new Syntaxer(lexemReader);
         OPS run = syntaxer.run();
@@ -37,14 +37,14 @@ public class SyntaxerTest {
     public void testRoundBracked() {
         // var1 * (1 + var2);
         LexemReader lexemReader = new DummyLexer(
-                new Lexem(TokenType.VAR_IDENTIFIER, "var1"),
-                new Lexem(TokenType.ARIPHMETIC_CONSTANT, "*"),
-                new Lexem(TokenType.ROUND_BRAKED_OPEN, "("),
-                new Lexem(TokenType.NUMBER, "1"),
-                new Lexem(TokenType.ARIPHMETIC_CONSTANT, "+"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "var2"),
-                new Lexem(TokenType.ROUND_BRAKED_CLOSE, ")"),
-                new Lexem(TokenType.COMMA_DOT, ";")
+                new Token(TokenType.VAR_IDENTIFIER, "var1"),
+                new Token(TokenType.ARIPHMETIC_CONSTANT, "*"),
+                new Token(TokenType.ROUND_BRAKED_OPEN, "("),
+                new Token(TokenType.NUMBER, "1"),
+                new Token(TokenType.ARIPHMETIC_CONSTANT, "+"),
+                new Token(TokenType.VAR_IDENTIFIER, "var2"),
+                new Token(TokenType.ROUND_BRAKED_CLOSE, ")"),
+                new Token(TokenType.COMMA_DOT, ";")
         );
         Syntaxer syntaxer = new Syntaxer(lexemReader);
         OPS run = syntaxer.run();
@@ -56,16 +56,16 @@ public class SyntaxerTest {
     public void testMultiplyExprs() {
         // a = b; c = b + c;
         LexemReader lexemReader = new DummyLexer(
-                new Lexem(TokenType.VAR_IDENTIFIER, "a"),
-                new Lexem(TokenType.ASSIGNMENT_CONST, "="),
-                new Lexem(TokenType.VAR_IDENTIFIER, "b"),
-                new Lexem(TokenType.COMMA_DOT, ";"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "c"),
-                new Lexem(TokenType.ASSIGNMENT_CONST, "="),
-                new Lexem(TokenType.VAR_IDENTIFIER, "b"),
-                new Lexem(TokenType.ASSIGNMENT_CONST, "+"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "c"),
-                new Lexem(TokenType.COMMA_DOT, ";")
+                new Token(TokenType.VAR_IDENTIFIER, "a"),
+                new Token(TokenType.ASSIGNMENT_CONST, "="),
+                new Token(TokenType.VAR_IDENTIFIER, "b"),
+                new Token(TokenType.COMMA_DOT, ";"),
+                new Token(TokenType.VAR_IDENTIFIER, "c"),
+                new Token(TokenType.ASSIGNMENT_CONST, "="),
+                new Token(TokenType.VAR_IDENTIFIER, "b"),
+                new Token(TokenType.ASSIGNMENT_CONST, "+"),
+                new Token(TokenType.VAR_IDENTIFIER, "c"),
+                new Token(TokenType.COMMA_DOT, ";")
         );
         Syntaxer syntaxer = new Syntaxer(lexemReader);
         OPS run = syntaxer.run();
@@ -77,22 +77,22 @@ public class SyntaxerTest {
     public void testArray() {
         // array(int, 5) arr; int var = arr(2);
         LexemReader lexemReader = new DummyLexer(
-                new Lexem(TokenType.KEYWORD, "array"),
-                new Lexem(TokenType.ROUND_BRAKED_OPEN, "("),
-                new Lexem(TokenType.TYPE, "int"),
-                new Lexem(TokenType.COMMA, ","),
-                new Lexem(TokenType.NUMBER, "5"),
-                new Lexem(TokenType.ROUND_BRAKED_CLOSE, ")"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "arr"),
-                new Lexem(TokenType.COMMA_DOT, ";"),
-                new Lexem(TokenType.TYPE, "int"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "var"),
-                new Lexem(TokenType.ASSIGNMENT_CONST, "="),
-                new Lexem(TokenType.VAR_IDENTIFIER, "arr"),
-                new Lexem(TokenType.ROUND_BRAKED_OPEN, "("),
-                new Lexem(TokenType.NUMBER, "2"),
-                new Lexem(TokenType.ROUND_BRAKED_CLOSE, ")"),
-                new Lexem(TokenType.COMMA_DOT, ";")
+                new Token(TokenType.KEYWORD, "array"),
+                new Token(TokenType.ROUND_BRAKED_OPEN, "("),
+                new Token(TokenType.TYPE, "int"),
+                new Token(TokenType.COMMA, ","),
+                new Token(TokenType.NUMBER, "5"),
+                new Token(TokenType.ROUND_BRAKED_CLOSE, ")"),
+                new Token(TokenType.VAR_IDENTIFIER, "arr"),
+                new Token(TokenType.COMMA_DOT, ";"),
+                new Token(TokenType.TYPE, "int"),
+                new Token(TokenType.VAR_IDENTIFIER, "var"),
+                new Token(TokenType.ASSIGNMENT_CONST, "="),
+                new Token(TokenType.VAR_IDENTIFIER, "arr"),
+                new Token(TokenType.ROUND_BRAKED_OPEN, "("),
+                new Token(TokenType.NUMBER, "2"),
+                new Token(TokenType.ROUND_BRAKED_CLOSE, ")"),
+                new Token(TokenType.COMMA_DOT, ";")
         );
         Syntaxer syntaxer = new Syntaxer(lexemReader);
         // <init> <ar_alloc> int 5 arr = <init> int a <index> arr 2
@@ -105,14 +105,14 @@ public class SyntaxerTest {
     public void testCompare() {
         // a > b; c <= 3;
         LexemReader lexemReader = new DummyLexer(
-                new Lexem(TokenType.VAR_IDENTIFIER, "a"),
-                new Lexem(TokenType.COMPARE_SIGN, ">"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "b"),
-                new Lexem(TokenType.COMMA_DOT, ";"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "c"),
-                new Lexem(TokenType.COMPARE_SIGN, "<="),
-                new Lexem(TokenType.NUMBER, "3"),
-                new Lexem(TokenType.COMMA_DOT, ";")
+                new Token(TokenType.VAR_IDENTIFIER, "a"),
+                new Token(TokenType.COMPARE_SIGN, ">"),
+                new Token(TokenType.VAR_IDENTIFIER, "b"),
+                new Token(TokenType.COMMA_DOT, ";"),
+                new Token(TokenType.VAR_IDENTIFIER, "c"),
+                new Token(TokenType.COMPARE_SIGN, "<="),
+                new Token(TokenType.NUMBER, "3"),
+                new Token(TokenType.COMMA_DOT, ";")
 
         );
         Syntaxer syntaxer = new Syntaxer(lexemReader);
@@ -126,14 +126,14 @@ public class SyntaxerTest {
     {
         // a or b; c eq a;
         LexemReader lexemReader = new DummyLexer(
-                new Lexem(TokenType.VAR_IDENTIFIER, "a"),
-                new Lexem(TokenType.BOOL_SIGN, "or"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "b"),
-                new Lexem(TokenType.COMMA_DOT, ";"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "c"),
-                new Lexem(TokenType.BOOL_SIGN, "eq"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "a"),
-                new Lexem(TokenType.COMMA_DOT, ";")
+                new Token(TokenType.VAR_IDENTIFIER, "a"),
+                new Token(TokenType.BOOL_SIGN, "or"),
+                new Token(TokenType.VAR_IDENTIFIER, "b"),
+                new Token(TokenType.COMMA_DOT, ";"),
+                new Token(TokenType.VAR_IDENTIFIER, "c"),
+                new Token(TokenType.BOOL_SIGN, "eq"),
+                new Token(TokenType.VAR_IDENTIFIER, "a"),
+                new Token(TokenType.COMMA_DOT, ";")
 
         );
         Syntaxer syntaxer = new Syntaxer(lexemReader);
@@ -146,35 +146,35 @@ public class SyntaxerTest {
     public void testBlock() {
         // if (a < 3): { a = 3; b = a; } else: { b = 1488; } a = 0;
         LexemReader lexemReader = new DummyLexer(
-                new Lexem(TokenType.KEYWORD, "if"),
-                new Lexem(TokenType.ROUND_BRAKED_OPEN, "("),
-                new Lexem(TokenType.VAR_IDENTIFIER, "a"),
-                new Lexem(TokenType.COMPARE_SIGN, "<"),
-                new Lexem(TokenType.NUMBER, "3"),
-                new Lexem(TokenType.ROUND_BRAKED_CLOSE, ")"),
-                new Lexem(TokenType.TWO_DOTS, ":"),
-                new Lexem(TokenType.FIGURED_BRAKED_OPEN, "{"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "a"),
-                new Lexem(TokenType.ASSIGNMENT_CONST, "="),
-                new Lexem(TokenType.NUMBER, "3"),
-                new Lexem(TokenType.COMMA_DOT, ";"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "b"),
-                new Lexem(TokenType.ASSIGNMENT_CONST, "="),
-                new Lexem(TokenType.VAR_IDENTIFIER, "a"),
-                new Lexem(TokenType.COMMA_DOT, ";"),
-                new Lexem(TokenType.FIGURED_BRAKED_CLOSE, "}"),
-                new Lexem(TokenType.KEYWORD, "else"),
-                new Lexem(TokenType.TWO_DOTS, ":"),
-                new Lexem(TokenType.FIGURED_BRAKED_OPEN, "{"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "b"),
-                new Lexem(TokenType.ASSIGNMENT_CONST, "="),
-                new Lexem(TokenType.NUMBER, "1488"),
-                new Lexem(TokenType.COMMA_DOT, ";"),
-                new Lexem(TokenType.FIGURED_BRAKED_CLOSE, "}"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "a"),
-                new Lexem(TokenType.ASSIGNMENT_CONST, "="),
-                new Lexem(TokenType.NUMBER, "0"),
-                new Lexem(TokenType.COMMA_DOT, ";")
+                new Token(TokenType.KEYWORD, "if"),
+                new Token(TokenType.ROUND_BRAKED_OPEN, "("),
+                new Token(TokenType.VAR_IDENTIFIER, "a"),
+                new Token(TokenType.COMPARE_SIGN, "<"),
+                new Token(TokenType.NUMBER, "3"),
+                new Token(TokenType.ROUND_BRAKED_CLOSE, ")"),
+                new Token(TokenType.TWO_DOTS, ":"),
+                new Token(TokenType.FIGURED_BRAKED_OPEN, "{"),
+                new Token(TokenType.VAR_IDENTIFIER, "a"),
+                new Token(TokenType.ASSIGNMENT_CONST, "="),
+                new Token(TokenType.NUMBER, "3"),
+                new Token(TokenType.COMMA_DOT, ";"),
+                new Token(TokenType.VAR_IDENTIFIER, "b"),
+                new Token(TokenType.ASSIGNMENT_CONST, "="),
+                new Token(TokenType.VAR_IDENTIFIER, "a"),
+                new Token(TokenType.COMMA_DOT, ";"),
+                new Token(TokenType.FIGURED_BRAKED_CLOSE, "}"),
+                new Token(TokenType.KEYWORD, "else"),
+                new Token(TokenType.TWO_DOTS, ":"),
+                new Token(TokenType.FIGURED_BRAKED_OPEN, "{"),
+                new Token(TokenType.VAR_IDENTIFIER, "b"),
+                new Token(TokenType.ASSIGNMENT_CONST, "="),
+                new Token(TokenType.NUMBER, "1488"),
+                new Token(TokenType.COMMA_DOT, ";"),
+                new Token(TokenType.FIGURED_BRAKED_CLOSE, "}"),
+                new Token(TokenType.VAR_IDENTIFIER, "a"),
+                new Token(TokenType.ASSIGNMENT_CONST, "="),
+                new Token(TokenType.NUMBER, "0"),
+                new Token(TokenType.COMMA_DOT, ";")
         );
         Syntaxer syntaxer = new Syntaxer(lexemReader);
         OPS run = syntaxer.run();
@@ -188,19 +188,19 @@ public class SyntaxerTest {
     {
         // while a > 42 : {a = a + 1;}
         LexemReader lexemReader = new DummyLexer(
-                new Lexem(TokenType.KEYWORD, "while"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "a"),
-                new Lexem(TokenType.COMPARE_SIGN, ">"),
-                new Lexem(TokenType.NUMBER, "42"),
-                new Lexem(TokenType.TWO_DOTS, ":"),
-                new Lexem(TokenType.FIGURED_BRAKED_OPEN, "{"),
-                new Lexem(TokenType.VAR_IDENTIFIER, "a"),
-                new Lexem(TokenType.ASSIGNMENT_CONST, "="),
-                new Lexem(TokenType.VAR_IDENTIFIER, "a"),
-                new Lexem(TokenType.ARIPHMETIC_CONSTANT, "+"),
-                new Lexem(TokenType.NUMBER, "1"),
-                new Lexem(TokenType.COMMA_DOT, ";"),
-                new Lexem(TokenType.FIGURED_BRAKED_CLOSE, "}")
+                new Token(TokenType.KEYWORD, "while"),
+                new Token(TokenType.VAR_IDENTIFIER, "a"),
+                new Token(TokenType.COMPARE_SIGN, ">"),
+                new Token(TokenType.NUMBER, "42"),
+                new Token(TokenType.TWO_DOTS, ":"),
+                new Token(TokenType.FIGURED_BRAKED_OPEN, "{"),
+                new Token(TokenType.VAR_IDENTIFIER, "a"),
+                new Token(TokenType.ASSIGNMENT_CONST, "="),
+                new Token(TokenType.VAR_IDENTIFIER, "a"),
+                new Token(TokenType.ARIPHMETIC_CONSTANT, "+"),
+                new Token(TokenType.NUMBER, "1"),
+                new Token(TokenType.COMMA_DOT, ";"),
+                new Token(TokenType.FIGURED_BRAKED_CLOSE, "}")
                 );
         Syntaxer syntaxer = new Syntaxer(lexemReader);
         OPS run = syntaxer.run();

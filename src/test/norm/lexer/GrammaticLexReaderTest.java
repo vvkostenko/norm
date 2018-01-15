@@ -22,11 +22,11 @@ public class GrammaticLexReaderTest {
             }
         });
 
-        Lexem eofLexem = reader.readOne();
-        assertEquals(eofLexem.type, TokenType.EOF);
-        assertEquals(eofLexem.value, "");
+        Token eofToken = reader.readOne();
+        assertEquals(eofToken.type, TokenType.EOF);
+        assertEquals(eofToken.value, "");
 
-        Lexem repearEOF = reader.readOne();
+        Token repearEOF = reader.readOne();
         assertEquals(repearEOF.type, TokenType.EOF);
         assertEquals(repearEOF.value, "");
     }
@@ -37,13 +37,13 @@ public class GrammaticLexReaderTest {
 
         for (String lexemString : bools) {
             LexReader reader = new LexReader(new StringStream(lexemString));
-            Lexem lexem = reader.readOne();
-            assertEquals(lexem.type, TokenType.BOOL_SIGN);
-            assertEquals(lexem.value, lexemString);
+            Token token = reader.readOne();
+            assertEquals(token.type, TokenType.BOOL_SIGN);
+            assertEquals(token.value, lexemString);
             //проверяем что всё полностью считал
-            lexem = reader.readOne();
-            assertEquals(lexem.type, TokenType.EOF);
-            assertEquals(lexem.value, "");
+            token = reader.readOne();
+            assertEquals(token.type, TokenType.EOF);
+            assertEquals(token.value, "");
         }
     }
 
@@ -53,12 +53,12 @@ public class GrammaticLexReaderTest {
 
         for (String lexemString : bools) {
             LexReader reader = new LexReader(new StringStream(lexemString));
-            Lexem lexem = reader.readOne();
-            assertEquals(lexem.value, lexemString);
+            Token token = reader.readOne();
+            assertEquals(token.value, lexemString);
             //проверяем что всё полностью считал
-            lexem = reader.readOne();
-            assertEquals(lexem.type, TokenType.EOF);
-            assertEquals(lexem.value, "");
+            token = reader.readOne();
+            assertEquals(token.type, TokenType.EOF);
+            assertEquals(token.value, "");
         }
     }
 
@@ -68,13 +68,13 @@ public class GrammaticLexReaderTest {
 
         for (String lexemString : bools) {
             LexReader reader = new LexReader(new StringStream(lexemString));
-            Lexem lexem = reader.readOne();
-            assertEquals(lexem.type, TokenType.TYPE);
-            assertEquals(lexem.value, lexemString);
+            Token token = reader.readOne();
+            assertEquals(token.type, TokenType.TYPE);
+            assertEquals(token.value, lexemString);
             //проверяем что всё полностью считал
-            lexem = reader.readOne();
-            assertEquals(lexem.type, TokenType.EOF);
-            assertEquals(lexem.value, "");
+            token = reader.readOne();
+            assertEquals(token.type, TokenType.EOF);
+            assertEquals(token.value, "");
         }
     }
 
@@ -84,13 +84,13 @@ public class GrammaticLexReaderTest {
 
         for (String lexemString : bools) {
             LexReader reader = new LexReader(new StringStream(lexemString));
-            Lexem lexem = reader.readOne();
-            assertEquals(lexem.type, TokenType.BOOL_CONSTANT);
-            assertEquals(lexem.value, lexemString);
+            Token token = reader.readOne();
+            assertEquals(token.type, TokenType.BOOL_CONSTANT);
+            assertEquals(token.value, lexemString);
             //проверяем что всё полностью считал
-            lexem = reader.readOne();
-            assertEquals(lexem.type, TokenType.EOF);
-            assertEquals(lexem.value, "");
+            token = reader.readOne();
+            assertEquals(token.type, TokenType.EOF);
+            assertEquals(token.value, "");
         }
     }
 
@@ -100,57 +100,57 @@ public class GrammaticLexReaderTest {
 
         for (String lexemString : bools) {
             LexReader reader = new LexReader(new StringStream(lexemString));
-            Lexem lexem = reader.readOne();
-            assertEquals(lexem.type, TokenType.ARIPHMETIC_CONSTANT);
-            assertEquals(lexem.value, lexemString);
+            Token token = reader.readOne();
+            assertEquals(token.type, TokenType.ARIPHMETIC_CONSTANT);
+            assertEquals(token.value, lexemString);
             //проверяем что всё полностью считал
-            lexem = reader.readOne();
-            assertEquals(lexem.type, TokenType.EOF);
-            assertEquals(lexem.value, "");
+            token = reader.readOne();
+            assertEquals(token.type, TokenType.EOF);
+            assertEquals(token.value, "");
         }
     }
 
     @Test
     public void roundBrakeds() {
         LexReader reader = new LexReader(new StringStream("("));
-        Lexem lexem = reader.readOne();
-        assertEquals(lexem.type, TokenType.ROUND_BRAKED_OPEN);
-        assertEquals(lexem.value, "(");
+        Token token = reader.readOne();
+        assertEquals(token.type, TokenType.ROUND_BRAKED_OPEN);
+        assertEquals(token.value, "(");
 
         //проверяем что всё полностью считал
-        lexem = reader.readOne();
-        assertEquals(lexem.type, TokenType.EOF);
-        assertEquals(lexem.value, "");
+        token = reader.readOne();
+        assertEquals(token.type, TokenType.EOF);
+        assertEquals(token.value, "");
 
         reader = new LexReader(new StringStream(")"));
-        lexem = reader.readOne();
-        assertEquals(lexem.type, TokenType.ROUND_BRAKED_CLOSE);
-        assertEquals(lexem.value, ")");
+        token = reader.readOne();
+        assertEquals(token.type, TokenType.ROUND_BRAKED_CLOSE);
+        assertEquals(token.value, ")");
 
         //проверяем что всё полностью считал
-        lexem = reader.readOne();
-        assertEquals(lexem.type, TokenType.EOF);
-        assertEquals(lexem.value, "");
+        token = reader.readOne();
+        assertEquals(token.type, TokenType.EOF);
+        assertEquals(token.value, "");
 
         reader = new LexReader(new StringStream("{"));
-        lexem = reader.readOne();
-        assertEquals(lexem.type, TokenType.FIGURED_BRAKED_OPEN);
-        assertEquals(lexem.value, "{");
+        token = reader.readOne();
+        assertEquals(token.type, TokenType.FIGURED_BRAKED_OPEN);
+        assertEquals(token.value, "{");
 
         //проверяем что всё полностью считал
-        lexem = reader.readOne();
-        assertEquals(lexem.type, TokenType.EOF);
-        assertEquals(lexem.value, "");
+        token = reader.readOne();
+        assertEquals(token.type, TokenType.EOF);
+        assertEquals(token.value, "");
 
         reader = new LexReader(new StringStream("}"));
-        lexem = reader.readOne();
-        assertEquals(lexem.type, TokenType.FIGURED_BRAKED_CLOSE);
-        assertEquals(lexem.value, "}");
+        token = reader.readOne();
+        assertEquals(token.type, TokenType.FIGURED_BRAKED_CLOSE);
+        assertEquals(token.value, "}");
 
         //проверяем что всё полностью считал
-        lexem = reader.readOne();
-        assertEquals(lexem.type, TokenType.EOF);
-        assertEquals(lexem.value, "");
+        token = reader.readOne();
+        assertEquals(token.type, TokenType.EOF);
+        assertEquals(token.value, "");
     }
 
     @Test
@@ -159,56 +159,56 @@ public class GrammaticLexReaderTest {
 
         for (String lexemString : bools) {
             LexReader reader = new LexReader(new StringStream(lexemString));
-            Lexem lexem = reader.readOne();
-            assertEquals(lexem.type, TokenType.KEYWORD);
-            assertEquals(lexem.value, lexemString);
+            Token token = reader.readOne();
+            assertEquals(token.type, TokenType.KEYWORD);
+            assertEquals(token.value, lexemString);
             //проверяем что всё полностью считал
-            lexem = reader.readOne();
-            assertEquals(lexem.type, TokenType.EOF);
-            assertEquals(lexem.value, "");
+            token = reader.readOne();
+            assertEquals(token.type, TokenType.EOF);
+            assertEquals(token.value, "");
         }
     }
 
     @Test
     public void dots() {
         LexReader reader = new LexReader(new StringStream(":"));
-        Lexem lexem = reader.readOne();
-        assertEquals(lexem.type, TokenType.TWO_DOTS);
-        assertEquals(lexem.value, ":");
+        Token token = reader.readOne();
+        assertEquals(token.type, TokenType.TWO_DOTS);
+        assertEquals(token.value, ":");
 
         //проверяем что всё полностью считал
-        lexem = reader.readOne();
-        assertEquals(lexem.type, TokenType.EOF);
-        assertEquals(lexem.value, "");
+        token = reader.readOne();
+        assertEquals(token.type, TokenType.EOF);
+        assertEquals(token.value, "");
 
         reader = new LexReader(new StringStream(";"));
-        lexem = reader.readOne();
-        assertEquals(lexem.type, TokenType.COMMA_DOT);
-        assertEquals(lexem.value, ";");
+        token = reader.readOne();
+        assertEquals(token.type, TokenType.COMMA_DOT);
+        assertEquals(token.value, ";");
 
         //проверяем что всё полностью считал
-        lexem = reader.readOne();
-        assertEquals(lexem.type, TokenType.EOF);
-        assertEquals(lexem.value, "");
+        token = reader.readOne();
+        assertEquals(token.type, TokenType.EOF);
+        assertEquals(token.value, "");
     }
 
     @Test
     public void nonFloatNumbers() {
         LexReader reader = new LexReader(new StringStream("123321223"));
-        Lexem lexem = reader.readOne();
-        assertEquals(lexem.type, TokenType.NUMBER);
-        assertEquals(lexem.value, "123321223");
+        Token token = reader.readOne();
+        assertEquals(token.type, TokenType.NUMBER);
+        assertEquals(token.value, "123321223");
     }
 
     @Test
     public void variableIdentifier() {
         LexReader reader = new LexReader(new StringStream("aaadasdaasdqzzxc"));
-        Lexem lexem = reader.readOne();
-        assertEquals(lexem.type, TokenType.VAR_IDENTIFIER);
-        assertEquals(lexem.value, "aaadasdaasdqzzxc");
+        Token token = reader.readOne();
+        assertEquals(token.type, TokenType.VAR_IDENTIFIER);
+        assertEquals(token.value, "aaadasdaasdqzzxc");
 
         reader = new LexReader(new StringStream("aaad123123asd"));
-        Lexem letterDigit = reader.readOne();
+        Token letterDigit = reader.readOne();
         assertEquals(letterDigit.type, TokenType.VAR_IDENTIFIER);
         assertEquals(letterDigit.value, "aaad123123asd");;
     }

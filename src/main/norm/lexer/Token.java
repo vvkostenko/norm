@@ -1,23 +1,23 @@
 package norm.lexer;
 
-public class Lexem {
+public class Token {
 
     TokenType type;
     String value;
 
-    public Lexem(){}
+    public Token(){}
 
-    public Lexem(TokenType _type, String _value)
+    public Token(TokenType type, String value)
     {
-        type = _type;
-        value = _value;
+        this.type = type;
+        this.value = value;
     }
 
     public TokenType getType() {
         return type;
     }
 
-    public Lexem setType(TokenType type) {
+    public Token setType(TokenType type) {
         this.type = type;
         return this;
     }
@@ -26,7 +26,7 @@ public class Lexem {
         return value;
     }
 
-    public Lexem setValue(String value) {
+    public Token setValue(String value) {
         this.value = value;
         return this;
     }
