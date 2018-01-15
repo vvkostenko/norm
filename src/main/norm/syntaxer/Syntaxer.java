@@ -1,5 +1,7 @@
 package norm.syntaxer;
 
+import norm.exception.LexemNotFound;
+import norm.exception.LexemNotResponsed;
 import norm.lexer.Token;
 import norm.lexer.LexemReader;
 import norm.lexer.TokenType;
@@ -20,8 +22,7 @@ public class Syntaxer
     {
     }
 
-    public OPS run()
-    {
+    public OPS run() throws LexemNotFound, LexemNotResponsed {
         OPS ops = new OPS();
         Token token;
         token = lexer.readOne();

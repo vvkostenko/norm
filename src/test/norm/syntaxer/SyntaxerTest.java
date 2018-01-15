@@ -1,5 +1,7 @@
 package norm.syntaxer;
 
+import norm.exception.LexemNotFound;
+import norm.exception.LexemNotResponsed;
 import norm.lexer.DummyLexer;
 import norm.lexer.Token;
 import norm.lexer.LexemReader;
@@ -17,7 +19,7 @@ public class SyntaxerTest {
     }
 
     @Test
-    public void testAriphmetic() {
+    public void testAriphmetic() throws LexemNotFound, LexemNotResponsed {
         // a + b - 5;
         LexemReader lexemReader = new DummyLexer(
                 new Token(TokenType.VAR_IDENTIFIER, "a"),
@@ -34,7 +36,7 @@ public class SyntaxerTest {
     }
 
     @Test
-    public void testRoundBracked() {
+    public void testRoundBracked() throws LexemNotFound, LexemNotResponsed {
         // var1 * (1 + var2);
         LexemReader lexemReader = new DummyLexer(
                 new Token(TokenType.VAR_IDENTIFIER, "var1"),
@@ -53,7 +55,7 @@ public class SyntaxerTest {
     }
 
     @Test
-    public void testMultiplyExprs() {
+    public void testMultiplyExprs() throws LexemNotFound, LexemNotResponsed {
         // a = b; c = b + c;
         LexemReader lexemReader = new DummyLexer(
                 new Token(TokenType.VAR_IDENTIFIER, "a"),
@@ -74,7 +76,7 @@ public class SyntaxerTest {
     }
 
     @Test
-    public void testArray() {
+    public void testArray() throws LexemNotFound, LexemNotResponsed {
         // array(int, 5) arr; int var = arr(2);
         LexemReader lexemReader = new DummyLexer(
                 new Token(TokenType.KEYWORD, "array"),
@@ -102,7 +104,7 @@ public class SyntaxerTest {
     }
 
     @Test
-    public void testCompare() {
+    public void testCompare() throws LexemNotFound, LexemNotResponsed {
         // a > b; c <= 3;
         LexemReader lexemReader = new DummyLexer(
                 new Token(TokenType.VAR_IDENTIFIER, "a"),
@@ -122,8 +124,7 @@ public class SyntaxerTest {
     }
 
     @Test
-    public void testBoolExpr()
-    {
+    public void testBoolExpr() throws LexemNotFound, LexemNotResponsed {
         // a or b; c eq a;
         LexemReader lexemReader = new DummyLexer(
                 new Token(TokenType.VAR_IDENTIFIER, "a"),
@@ -143,7 +144,7 @@ public class SyntaxerTest {
     }
 
     @Test
-    public void testBlock() {
+    public void testBlock() throws LexemNotFound, LexemNotResponsed {
         // if (a < 3): { a = 3; b = a; } else: { b = 1488; } a = 0;
         LexemReader lexemReader = new DummyLexer(
                 new Token(TokenType.KEYWORD, "if"),
@@ -184,8 +185,7 @@ public class SyntaxerTest {
     }
 
     @Test
-    public void testWhile()
-    {
+    public void testWhile() throws LexemNotFound, LexemNotResponsed {
         // while a > 42 : {a = a + 1;}
         LexemReader lexemReader = new DummyLexer(
                 new Token(TokenType.KEYWORD, "while"),
