@@ -18,7 +18,6 @@ public class Syntaxer
 
     public void HandleLexem(Token token)
     {
-
     }
 
     public OPS run()
