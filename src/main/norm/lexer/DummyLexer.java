@@ -15,7 +15,7 @@ public class DummyLexer implements LexemReader{
 
     public Lexem readOne() {
         if (position >= lexems.size()) {
-            return new Lexem().setValue("").setType(LexemType.EOF);
+            return new Lexem().setValue("").setType(TokenType.EOF);
         } else {
             return lexems.get(position++);
         }

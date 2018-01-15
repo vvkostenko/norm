@@ -1,6 +1,6 @@
 package norm.lexer;
 
-public enum LexemType {
+public enum TokenType {
     /**
      * < | > | <= | >=
      */

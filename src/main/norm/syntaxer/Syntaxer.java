@@ -1,10 +1,8 @@
 package norm.syntaxer;
 
-import javafx.util.Pair;
 import norm.lexer.Lexem;
-import norm.lexer.LexReader;
 import norm.lexer.LexemReader;
-import norm.lexer.LexemType;
+import norm.lexer.TokenType;
 
 import java.util.*;
 
@@ -24,7 +22,7 @@ public class Syntaxer
         OPS ops = new OPS();
         Lexem lexem;
         lexem = lexer.readOne();
-        while(lexem != null && !lexem.getType().equals(LexemType.EOF))
+        while(lexem != null && !lexem.getType().equals(TokenType.EOF))
         {
             stack.push(lexem);
             lexem = lexer.readOne();
@@ -42,7 +40,7 @@ public class Syntaxer
     {
         LexemReader a = new LexemReader() {
             public Lexem readOne() {
-                return new Lexem().setType(LexemType.EOF).setValue("");
+                return new Lexem().setType(TokenType.EOF).setValue("");
             }
 
             public List<Lexem> readMany(int count) {
