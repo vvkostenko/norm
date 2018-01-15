@@ -19,28 +19,28 @@ public class LexicalMatrix {
         Rule toStart = new Rule(start);
 
         //SIMPLE RULES
-        add(start, '(', responsed, LexemType.ROUND_BRAKED_OPEN);
-        add(start, ')', responsed, LexemType.ROUND_BRAKED_CLOSE);
-        add(start, '{', responsed, LexemType.FIGURED_BRAKED_OPEN);
-        add(start, '}', responsed, LexemType.FIGURED_BRAKED_CLOSE);
-        add(start, ':', responsed, LexemType.TWO_DOTS);
-        add(start, ';', responsed, LexemType.COMMA_DOT);
-        add(start, ',', responsed, LexemType.COMMA);
-        add(start, '=', responsed, LexemType.ASSIGNMENT_CONST);
+        add(start, '(', responsed, TokenType.ROUND_BRAKED_OPEN);
+        add(start, ')', responsed, TokenType.ROUND_BRAKED_CLOSE);
+        add(start, '{', responsed, TokenType.FIGURED_BRAKED_OPEN);
+        add(start, '}', responsed, TokenType.FIGURED_BRAKED_CLOSE);
+        add(start, ':', responsed, TokenType.TWO_DOTS);
+        add(start, ';', responsed, TokenType.COMMA_DOT);
+        add(start, ',', responsed, TokenType.COMMA);
+        add(start, '=', responsed, TokenType.ASSIGNMENT_CONST);
 
         //ARIPHMETIC
-        add(start, '+', responsed, LexemType.ARIPHMETIC_CONSTANT);
-        add(start, '-', responsed, LexemType.ARIPHMETIC_CONSTANT);
-        add(start, '*', responsed, LexemType.ARIPHMETIC_CONSTANT);
-        add(start, '/', responsed, LexemType.ARIPHMETIC_CONSTANT);
+        add(start, '+', responsed, TokenType.ARIPHMETIC_CONSTANT);
+        add(start, '-', responsed, TokenType.ARIPHMETIC_CONSTANT);
+        add(start, '*', responsed, TokenType.ARIPHMETIC_CONSTANT);
+        add(start, '/', responsed, TokenType.ARIPHMETIC_CONSTANT);
 
         //COMPARE
         State cmp = new State("CMP");
         Rule cmpNonTerminal = new Rule(cmp);
         add(start, '<', cmpNonTerminal);
         add(start, '>', cmpNonTerminal);
-        add(cmp, '=', responsed, LexemType.COMPARE_SIGN);
-        add(cmp, EMPTY_CHAR, responsed, LexemType.COMPARE_SIGN);
+        add(cmp, '=', responsed, TokenType.COMPARE_SIGN);
+        add(cmp, EMPTY_CHAR, responsed, TokenType.COMPARE_SIGN);
 
         //NEWLINES
         Rule newLineRule = new Rule(start).setLexicalProgram(Rule.Programs.NEWLINE);
@@ -63,7 +63,7 @@ public class LexicalMatrix {
             add(start, ch, numberRule);
             add(number, ch, numberRule);
         }
-        add(number, EMPTY_CHAR, responsed, LexemType.NUMBER);
+        add(number, EMPTY_CHAR, responsed, TokenType.NUMBER);
 
         // KEYWORDS
         Collection<Character> keywordFirstLetterCollection = Arrays.asList(
@@ -90,7 +90,7 @@ public class LexicalMatrix {
         add(array2.getState(), 'r', array3);
         add(array3.getState(), 'a', array4);
         add(array4.getState(), 'y', array5);
-        add(array5.getState(), EMPTY_CHAR, responsed, LexemType.KEYWORD);
+        add(array5.getState(), EMPTY_CHAR, responsed, TokenType.KEYWORD);
         for (char c : alphabet) {
             add(array5.getState(), c, varIdentifierRule);
         }
@@ -98,7 +98,7 @@ public class LexicalMatrix {
 
     }
 
-    private void add(State start, char terminal, Rule nonTerminal, LexemType type) {
+    private void add(State start, char terminal, Rule nonTerminal, TokenType type) {
 
     }
 

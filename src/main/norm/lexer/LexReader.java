@@ -25,7 +25,7 @@ public class LexReader implements LexemReader {
             Lexem lexem = readOne();
             if (lexem == null) break;
             list.add(lexem);
-            if (lexem.type.equals(LexemType.EOF))
+            if (lexem.type.equals(TokenType.EOF))
                 break;
         }
         return list;
