@@ -32,13 +32,24 @@ public class StringLexicalAnalyzer implements LexemReader {
                 char currentChar = src.charAt(position);
                 position++;
                 sb.append(currentChar);
-                LexicalMatrix.Element nextStep = lexicalMatrix.get(currentState,currentChar);
+                LexicalMatrix.Element nextStep = lexicalMatrix.get(currentState, currentChar);
                 System.out.println("Found: " + nextStep);
                 if (nextStep == null) {
-                    throw new LexemNotFound("Lexem not found: " + sb.toString());
+                    LexicalMatrix.Element testEmpty = lexicalMatrix.get(currentState, LexicalMatrix.EMPTY_CHAR);
+                    if (testEmpty == null)
+                        throw new LexemNotFound("Lexem not found: " + sb.toString());
+                    else {
+                        System.out.println("FOUND empty rule");
+                        position--;
+                        if (testEmpty.isFinal()) {
+                            return new Token(testEmpty.getFinalType(),sb.toString());
+                        } else {
+                            currentState = testEmpty.getNextState();
+                        }
+                    }
                 } else {
                     if (nextStep.isFinal()) {
-                        return new Token(nextStep.getFinalType(),sb.toString());
+                        return new Token(nextStep.getFinalType(), sb.toString());
                     } else {
                         currentState = nextStep.getNextState();
                         System.out.println("Next state: " + currentState);

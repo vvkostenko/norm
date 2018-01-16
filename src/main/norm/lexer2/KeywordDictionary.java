@@ -29,7 +29,7 @@ public class KeywordDictionary {
     }
 
     public Set<String> getFor(char ch) {
-        return map.containsKey(ch) ? Collections.emptySet() : map.get(ch);
+        return !map.containsKey(ch) ? Collections.emptySet() : map.get(ch);
     }
 
     public TokenType getType(String type) {

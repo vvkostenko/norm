@@ -212,7 +212,7 @@ public class LexicalMatrix {
         Set<String> nextKeywords = new HashSet<>(keywords.size());
         boolean hasFinal = false;
         for (String k : keywords) {
-            if (k.length() < seek + 1) {
+            if (k.length() > seek + 1) {
                 nextKeywords.add(k);
                 charsForPostion.add(k.charAt(seek));
             } else {
