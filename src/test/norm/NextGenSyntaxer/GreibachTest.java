@@ -43,7 +43,7 @@ public class GreibachTest {
         sampleRules.add(F, rbo, S, rbc);
         sampleRules.add(F, a);
 
-        HashMap<SyntaxMap.NonTerm, List<Rule>> result = Greibach.convert(sampleRules.getRules());
+        HashMap<SyntaxMap.Element, List<Rule>> result = Greibach.convert(sampleRules.getRules());
 
         SyntaxMap testMap = new SyntaxMap();
         testMap.add(S, rbo, S, rbc, V, U);

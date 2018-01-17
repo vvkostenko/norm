@@ -10,7 +10,13 @@ import java.util.List;
 import java.util.concurrent.locks.Condition;
 
 public class SyntaxMap {
-    public static class NonTerm {
+    public interface Element {
+        String value();
+
+        boolean isTerm();
+    }
+
+    public static class NonTerm implements Element {
         String value;
 
         public NonTerm(String value) {
@@ -23,9 +29,19 @@ public class SyntaxMap {
                     + value +
                     '}';
         }
+
+        @Override
+        public String value() {
+            return value;
+        }
+
+        @Override
+        public boolean isTerm() {
+            return false;
+        }
     }
 
-    public static class Term {
+    public static class Term implements Element {
         TokenType type;
         String value;
 
@@ -41,11 +57,21 @@ public class SyntaxMap {
                     "," + value +
                     '}';
         }
+
+        @Override
+        public String value() {
+            return value;
+        }
+
+        @Override
+        public boolean isTerm() {
+            return true;
+        }
     }
 
-    HashMap<NonTerm, List<Rule>> rules = new HashMap<>();
+    HashMap<Element, List<Rule>> rules = new HashMap<>();
 
-    public HashMap<NonTerm, List<Rule>> getRules() {
+    public HashMap<Element, List<Rule>> getRules() {
         return rules;
     }
 
@@ -179,17 +205,15 @@ public class SyntaxMap {
         add(BoolConst, falseKeyword);
     }
 
-    public void add(NonTerm body, Object... list) {
+    public void add(Element body, Element... list) {
         if (rules.containsKey(body)) {
-            Rule an = new Rule();
-            an.add(list);
-            rules.get(body).add(an);
+            rules.get(body).add(
+                    new Rule().addAll(Arrays.asList(list))
+            );
         } else {
-            List<Rule> l = new ArrayList<>();
-            Rule r = new Rule();
-            r.addAll(Arrays.asList(list));
-            l.add(r);
-            rules.put(body, l);
+            List<Rule> rulesList = new ArrayList<>();
+            rulesList.add(new Rule().addAll(Arrays.asList(list)));
+            rules.put(body, rulesList);
         }
     }
 
