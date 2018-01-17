@@ -2,10 +2,7 @@ package norm.NextGenSyntaxer;
 
 import norm.lexer.TokenType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class SyntaxMap {
     public interface Element {
@@ -37,6 +34,20 @@ public class SyntaxMap {
         public boolean isTerm() {
             return false;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof NonTerm)) return false;
+            NonTerm nonTerm = (NonTerm) o;
+            return Objects.equals(value, nonTerm.value);
+        }
+
+        @Override
+        public int hashCode() {
+
+            return Objects.hash(value);
+        }
     }
 
     public static class Term implements Element {
@@ -46,6 +57,10 @@ public class SyntaxMap {
         public Term(TokenType type, String value) {
             this.type = type;
             this.value = value;
+        }
+
+        public TokenType getType() {
+            return type;
         }
 
         @Override
@@ -59,6 +74,21 @@ public class SyntaxMap {
         @Override
         public String value() {
             return value;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Term)) return false;
+            Term term = (Term) o;
+            return getType() == term.getType() &&
+                    Objects.equals(value, term.value);
+        }
+
+        @Override
+        public int hashCode() {
+
+            return Objects.hash(getType(), value);
         }
 
         @Override

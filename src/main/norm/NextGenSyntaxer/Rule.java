@@ -49,6 +49,6 @@ public class Rule {
     }
 
     public List<SyntaxMap.Element> subList(int begin, int end) {
-        return elements.subList(begin,end);
+        return elements.subList(begin, end);
     }
 }
