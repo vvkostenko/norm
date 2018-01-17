@@ -1,5 +1,6 @@
 package norm.lexer2;
 
+import norm.NextGenSyntaxer.SyntaxMap;
 import norm.exception.DuplicateLexicalRule;
 import norm.exception.LexicalStateNotFound;
 import norm.lexer.TokenType;
@@ -99,9 +100,10 @@ public class LexicalMatrix {
 
     public Element get(NonTerminal state, char character) {
         if (!lexicalMatrix.containsKey(state)) {
-            throw new LexicalStateNotFound(
-                    String.format("Lexical state '%s' not found with %c", state, character)
-            );
+//            throw new LexicalStateNotFound(
+//                    String.format("Lexical state '%s' not found with %c", state, character)
+//            );
+            return null;
         } else {
             Map<Character, Element> map = lexicalMatrix.get(state);
             return map.getOrDefault(character, null);
@@ -183,37 +185,44 @@ public class LexicalMatrix {
         keywordDictionary.add("true", TokenType.BOOL_CONSTANT);
         keywordDictionary.add("false", TokenType.BOOL_CONSTANT);
 
-
-        //Имена переменных
-        Set<Character> firstKeywordChars = keywordDictionary.getFirstChars();
         //Построение деревьев перехода
-        generateKeywordRules(keywordDictionary.getAllKeywords(), start, 0);
-
-        for (char ch : ALPHABET) {
-            if (!firstKeywordChars.contains(ch) && !Character.isDigit(ch)) {
-                add(start, ch, varIdentifier, Semantic.NEWLINE);
-            }
-        }
+        generateKeywordsRules2(keywordDictionary.getAllKeywords(), start, 0);
     }
 
     private void generateKeywordsRules2(Collection<String> group, NonTerminal nonTerminal, int position) {
         HashMap<Character, List<String>> nextGroups = new HashMap<>();
         boolean hasFinal = false;
         for (String kw : group) {
-            if (kw.length() > position)
-                continue;
-            else if (kw.length() == position) {
-                //прошли до конца
-            } else {
+            if (kw.length() < position) {
                 char ch = kw.charAt(position);
                 if (nextGroups.containsKey(ch)) {
-                    nextGroups.get(ch);
+                    nextGroups.get(ch).add(kw);
                 } else {
                     List<String> ksw = new ArrayList<>();
                     ksw.add(kw);
                     nextGroups.put(ch, ksw);
                 }
+            } else if (kw.length() == position) {
+                hasFinal = true;
+                addFinal(nonTerminal, EMPTY_CHAR, keywordDictionary.getType(kw));
             }
+        }
+        if (!hasFinal)
+            addFinal(nonTerminal, EMPTY_CHAR, TokenType.VAR_IDENTIFIER);
+
+        Set<Character> usedCharacters = nextGroups.keySet();
+        for (char ch : ALPHABET) {
+            if (!usedCharacters.contains(ch)) {
+                if (nonTerminal.equals(start) && Character.isDigit(ch))
+                    continue;
+                add(nonTerminal, ch, varIdentifier);
+            }
+        }
+
+        for (Character ch : usedCharacters) {
+            List<String> nextCollection = nextGroups.get(ch);
+            NonTerminal nt = new NonTerminal(getKeywordTagName(nextCollection.get(0).substring(0, position)));
+            generateKeywordsRules2((Collection<String>) nextGroups, nt, position + 1);
         }
     }
 

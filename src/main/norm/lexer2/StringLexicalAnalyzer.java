@@ -42,7 +42,7 @@ public class StringLexicalAnalyzer implements LexemReader {
                         System.out.println("FOUND empty rule");
                         position--;
                         if (testEmpty.isFinal()) {
-                            return new Token(testEmpty.getFinalType(),sb.toString());
+                            return new Token(testEmpty.getFinalType(), sb.toString());
                         } else {
                             currentState = testEmpty.getNextState();
                         }
