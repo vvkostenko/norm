@@ -167,6 +167,7 @@ public class StringLexicalAnalyzerTest {
         assertEquals(reader.readOne(), tt(KEYWORD, "if"));
         assertEquals(reader.readOne(), tt(NUMBER, "72"));
         assertEquals(reader.readOne(), tt(COMPARE_SIGN, ">"));
+        assertEquals(reader.readOne(), tt(VAR_IDENTIFIER, "radius"));
         assertEquals(reader.readOne(), tt(TWO_DOTS, ":"));
         assertEquals(reader.readOne(), tt(FIGURED_BRAKED_OPEN, "{"));
         assertEquals(reader.readOne(), tt(VAR_IDENTIFIER, "radius"));
@@ -184,6 +185,7 @@ public class StringLexicalAnalyzerTest {
         assertEquals(reader.readOne(), tt(KEYWORD, "if"));
         assertEquals(reader.readOne(), tt(NUMBER, "72"));
         assertEquals(reader.readOne(), tt(COMPARE_SIGN, ">"));
+        assertEquals(reader.readOne(), tt(VAR_IDENTIFIER, "radius"));
         assertEquals(reader.readOne(), tt(TWO_DOTS, ":"));
         assertEquals(reader.readOne(), tt(FIGURED_BRAKED_OPEN, "{"));
         assertEquals(reader.readOne(), tt(VAR_IDENTIFIER, "radius"));
@@ -208,6 +210,7 @@ public class StringLexicalAnalyzerTest {
 
         assertEquals(reader.readOne(), tt(KEYWORD, "while"));
         assertEquals(reader.readOne(), tt(VAR_IDENTIFIER, "a"));
+        assertEquals(reader.readOne(), tt(COMPARE_SIGN, ">"));
         assertEquals(reader.readOne(), tt(NUMBER, "42"));
         assertEquals(reader.readOne(), tt(TWO_DOTS, ":"));
         assertEquals(reader.readOne(), tt(VAR_IDENTIFIER, "a"));
@@ -223,11 +226,11 @@ public class StringLexicalAnalyzerTest {
     public void testArray() throws Exception {
         LexemReader reader = new StringLexicalAnalyzer(lexicalMatrix,
                 "array(int,15)");
-        assertEquals(reader.readOne(),tt(KEYWORD,"array"));
-        assertEquals(reader.readOne(), tt(ROUND_BRAKED_OPEN,"("));
-        assertEquals(reader.readOne(), tt(TYPE,"int"));
-        assertEquals(reader.readOne(), tt(COMMA,","));
-        assertEquals(reader.readOne(), tt(NUMBER,"15"));
+        assertEquals(reader.readOne(), tt(KEYWORD, "array"));
+        assertEquals(reader.readOne(), tt(ROUND_BRAKED_OPEN, "("));
+        assertEquals(reader.readOne(), tt(TYPE, "int"));
+        assertEquals(reader.readOne(), tt(COMMA, ","));
+        assertEquals(reader.readOne(), tt(NUMBER, "15"));
         assertEquals(reader.readOne(), tt(ROUND_BRAKED_CLOSE, ")"));
     }
 
@@ -236,15 +239,15 @@ public class StringLexicalAnalyzerTest {
         LexemReader reader = new StringLexicalAnalyzer(lexicalMatrix,
                 "(a<=35) and a <41 or true");
 
-        assertEquals(reader.readOne(),tt(ROUND_BRAKED_OPEN,"("));
-        assertEquals(reader.readOne(), tt(VAR_IDENTIFIER,"a"));
-        assertEquals(reader.readOne(), tt(COMPARE_SIGN,"<="));
-        assertEquals(reader.readOne(), tt(NUMBER,"35"));
-        assertEquals(reader.readOne(),tt(ROUND_BRAKED_CLOSE,")"));
-        assertEquals(reader.readOne(), tt(BOOL_SIGN, "and"));
+        assertEquals(reader.readOne(), tt(ROUND_BRAKED_OPEN, "("));
         assertEquals(reader.readOne(), tt(VAR_IDENTIFIER, "a"));
-        assertEquals(reader.readOne(),  tt(COMPARE_SIGN, "<"));
-        assertEquals(reader.readOne(), tt(NUMBER,"41"));
+        assertEquals(reader.readOne(), tt(COMPARE_SIGN, "<="));
+        assertEquals(reader.readOne(), tt(NUMBER, "35"));
+        assertEquals(reader.readOne(), tt(ROUND_BRAKED_CLOSE, ")"));
+        assertEquals(reader.readOne(), tt(BOOL_CONSTANT, "and"));
+        assertEquals(reader.readOne(), tt(VAR_IDENTIFIER, "a"));
+        assertEquals(reader.readOne(), tt(COMPARE_SIGN, "<"));
+        assertEquals(reader.readOne(), tt(NUMBER, "41"));
         assertEquals(reader.readOne(), tt(BOOL_SIGN, "or"));
         assertEquals(reader.readOne(), tt(BOOL_CONSTANT, "true"));
     }

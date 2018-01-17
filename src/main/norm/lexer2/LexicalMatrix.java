@@ -147,6 +147,7 @@ public class LexicalMatrix {
         NonTerminal compare2 = new NonTerminal("CmpEq");
         add(start, '<', compare1);
         add(start, '>', compare1);
+        add(compare1, '=', compare2);
         addFinal(compare1, EMPTY_CHAR, TokenType.COMPARE_SIGN);
         addFinal(compare2, EMPTY_CHAR, TokenType.COMPARE_SIGN);
 
