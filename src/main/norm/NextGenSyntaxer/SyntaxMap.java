@@ -3,22 +3,29 @@ package norm.NextGenSyntaxer;
 import norm.lexer.TokenType;
 
 import javax.management.MBeanException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.locks.Condition;
 
 public class SyntaxMap {
-    public static class NonTerm
-    {
+    public static class NonTerm {
         String value;
 
         public NonTerm(String value) {
             this.value = value;
         }
+
+        @Override
+        public String toString() {
+            return "NonTerm{"
+                    + value +
+                    '}';
+        }
     }
 
-    public static class Term{
+    public static class Term {
         TokenType type;
         String value;
 
@@ -26,9 +33,21 @@ public class SyntaxMap {
             this.type = type;
             this.value = value;
         }
+
+        @Override
+        public String toString() {
+            return "Term{" +
+                    "" + type +
+                    "," + value +
+                    '}';
+        }
     }
 
-    HashMap<NonTerm, List<Object>> rules = new HashMap<>();
+    HashMap<NonTerm, List<Rule>> rules = new HashMap<>();
+
+    public HashMap<NonTerm, List<Rule>> getRules() {
+        return rules;
+    }
 
     // Non-terminals
     NonTerm Start = new NonTerm("S");
@@ -89,7 +108,7 @@ public class SyntaxMap {
     Term intKeyword = new Term(TokenType.TYPE, "int");
     Term comma = new Term(TokenType.COMMA, ",");
 
-    public void init(){
+    public void init() {
         add(Start, Body);
 
         add(Body, Variative, MegaBody);
@@ -160,8 +179,18 @@ public class SyntaxMap {
         add(BoolConst, falseKeyword);
     }
 
-    private void add(NonTerm body, Object... list){
-        rules.put(body, Arrays.asList(list));
+    public void add(NonTerm body, Object... list) {
+        if (rules.containsKey(body)) {
+            Rule an = new Rule();
+            an.add(list);
+            rules.get(body).add(an);
+        } else {
+            List<Rule> l = new ArrayList<>();
+            Rule r = new Rule();
+            r.addAll(Arrays.asList(list));
+            l.add(r);
+            rules.put(body, l);
+        }
     }
 
 }
