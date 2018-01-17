@@ -28,6 +28,10 @@ public class KeywordDictionary {
         return this;
     }
 
+    public Collection<String> getAllKeywords() {
+        return typeMap.keySet();
+    }
+
     public Set<String> getFor(char ch) {
         return !map.containsKey(ch) ? Collections.emptySet() : map.get(ch);
     }
