@@ -44,7 +44,10 @@ public class Syntax implements SyntaxerBase {
 
         while (!stack.empty()) {
             SyntaxMap.Element stackTop = stack.pop();
-            Token nextSymbol = tokens.get(0);
+            Token nextSymbol = new Token();
+
+            if(tokens.size() > 0)
+                nextSymbol = tokens.get(0);
 
             if (!stackTop.isTerm()) {
                 Rule currentRule = findRule(rules.get(stackTop), nextSymbol);
@@ -59,8 +62,9 @@ public class Syntax implements SyntaxerBase {
                     stack.push(currentRule.get(i));
             } else if (stackTop.isTerm()) {
                 TokenType type = ((SyntaxMap.Term) stackTop).getType();
-                if (nextSymbol.getType().equals(type)) {
-                    tokens.remove(0);
+                if(nextSymbol.getType() != null)
+                    if (nextSymbol.getType().equals(type)) {
+                        tokens.remove(0);
                 } else {
                     throw new RuntimeException("Цепочка не распознана");
                 }
@@ -87,8 +91,8 @@ public class Syntax implements SyntaxerBase {
                 new Token(TokenType.VAR_IDENTIFIER, "a"),
                 new Token(TokenType.ASSIGNMENT_CONST, "="),
                 new Token(TokenType.VAR_IDENTIFIER, "b"),
-//                new Token(TokenType.ARIPHMETIC_CONSTANT, "+"),
-//                new Token(TokenType.VAR_IDENTIFIER, "c"),
+                new Token(TokenType.ARIPHMETIC_CONSTANT, "+"),
+                new Token(TokenType.VAR_IDENTIFIER, "c"),
                 new Token(TokenType.COMMA_DOT, ";")
         ));
 
