@@ -31,10 +31,11 @@ public class StringLexicalAnalyzer implements LexemReader {
             do {
                 char currentChar = src.charAt(position);
                 position++;
-                sb.append(currentChar);
+                System.out.println("Try to find " + currentState + "(" + currentChar + ")");
                 LexicalMatrix.Element nextStep = lexicalMatrix.get(currentState, currentChar);
                 System.out.println("Found: " + nextStep);
                 if (nextStep == null) {
+                    sb.append(currentChar);
                     LexicalMatrix.Element testEmpty = lexicalMatrix.get(currentState, LexicalMatrix.EMPTY_CHAR);
                     if (testEmpty == null)
                         throw new LexemNotFound("Lexem not found: " + sb.toString());
@@ -42,12 +43,20 @@ public class StringLexicalAnalyzer implements LexemReader {
                         System.out.println("FOUND empty rule");
                         position--;
                         if (testEmpty.isFinal()) {
-                            return new Token(testEmpty.getFinalType(), sb.toString());
+                            String result = sb.toString();
+                            return new Token(testEmpty.getFinalType(), result.substring(0, Math.max(0, result.length() - 1)));
                         } else {
                             currentState = testEmpty.getNextState();
                         }
                     }
                 } else {
+                    if (nextStep.getSemantic() != null) {
+                        if (!nextStep.getSemantic().equals(LexicalMatrix.Semantic.NEWLINE)
+                                && !nextStep.getSemantic().equals(LexicalMatrix.Semantic.SPACE))
+                            sb.append(currentChar);
+                    } else {
+                        sb.append(currentChar);
+                    }
                     if (nextStep.isFinal()) {
                         return new Token(nextStep.getFinalType(), sb.toString());
                     } else {
@@ -57,7 +66,7 @@ public class StringLexicalAnalyzer implements LexemReader {
                 }
             } while (position < src.length());
 
-            throw new LexemNotResponsed("Lexem not responsed: " + sb.toString());
+            return Token.EOF();
         }
     }
 

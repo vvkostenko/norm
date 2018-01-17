@@ -43,4 +43,22 @@ public class Token {
                 ", " + value  +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Token)) return false;
+
+        Token token = (Token) o;
+
+        if (getType() != token.getType()) return false;
+        return getValue() != null ? getValue().equals(token.getValue()) : token.getValue() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getType().hashCode();
+        result = 31 * result + (getValue() != null ? getValue().hashCode() : 0);
+        return result;
+    }
 }

@@ -1,6 +1,5 @@
 package norm.lexer2;
 
-import norm.NextGenSyntaxer.SyntaxMap;
 import norm.exception.DuplicateLexicalRule;
 import norm.exception.LexicalStateNotFound;
 import norm.lexer.TokenType;
@@ -85,7 +84,7 @@ public class LexicalMatrix {
     }
 
     public enum Semantic {
-        NEWLINE, NEWSPACE
+        NEWLINE, SPACE
     }
 
     private static final char[] ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
@@ -146,8 +145,8 @@ public class LexicalMatrix {
         //Сравнения
         NonTerminal compare1 = new NonTerminal("Cmp");
         NonTerminal compare2 = new NonTerminal("CmpEq");
-        add(start, '<', compare1, Semantic.NEWLINE);
-        add(start, '>', compare1, Semantic.NEWLINE);
+        add(start, '<', compare1);
+        add(start, '>', compare1);
         addFinal(compare1, EMPTY_CHAR, TokenType.COMPARE_SIGN);
         addFinal(compare2, EMPTY_CHAR, TokenType.COMPARE_SIGN);
 
@@ -155,20 +154,11 @@ public class LexicalMatrix {
         NonTerminal digit = new NonTerminal("Digit");
         for (int i = 0; i <= 9; i++) {
             Character ch = Character.forDigit(i, 10);
-            add(start, ch, digit, Semantic.NEWLINE);
-            add(digit, ch, digit, Semantic.NEWLINE);
+            add(start, ch, digit);
+            add(digit, ch, digit);
+            add(varIdentifier, ch, varIdentifier);
         }
         addFinal(digit, EMPTY_CHAR, TokenType.NUMBER);
-
-        // Пробелы
-        add(start, '\n', start, Semantic.NEWLINE);
-        add(start, '\u000b', start, Semantic.NEWSPACE); //Vertical tab
-        add(start, '\r', start, Semantic.NEWSPACE);
-        add(start, '\t', start, Semantic.NEWSPACE);
-        add(start, ' ', start, Semantic.NEWSPACE);
-        add(start, '\u0085', start, Semantic.NEWLINE); //NEXT Line NEL,
-        add(start, '\u2028', start, Semantic.NEWLINE); //Line Separator LS
-        add(start, '\u2029', start, Semantic.NEWLINE); //Paragraph separator PS
 
         // Служебные слова
         keywordDictionary.add("if", TokenType.KEYWORD);
@@ -187,13 +177,35 @@ public class LexicalMatrix {
 
         //Построение деревьев перехода
         generateKeywordsRules2(keywordDictionary.getAllKeywords(), start, 0);
+        addFinal(varIdentifier, EMPTY_CHAR, TokenType.VAR_IDENTIFIER);
+        Set<NonTerminal> generated = lexicalMatrix.keySet();
+        for (String kw : keywordDictionary.getAllKeywords()) {
+            if (!generated.contains(new NonTerminal(getKeywordTagName(kw))))
+                throw new LexicalStateNotFound("Матрица ключевых слов построена не полностью. Не найдено правило для +" + getKeywordTagName(kw));
+        }
+        for (Character ch : ALPHABET) {
+            if (!Character.isDigit(ch))
+                add(varIdentifier, ch, varIdentifier);
+        }
+    }
+
+    private void fillSpaces(NonTerminal nonTerminal) {
+        // Пробелы
+        add(nonTerminal, '\n', nonTerminal, Semantic.NEWLINE);
+        add(nonTerminal, '\u000b', nonTerminal, Semantic.SPACE); //Vertical tab
+        add(nonTerminal, '\r', nonTerminal, Semantic.SPACE);
+        add(nonTerminal, '\t', nonTerminal, Semantic.SPACE);
+        add(nonTerminal, ' ', nonTerminal, Semantic.SPACE);
+        add(nonTerminal, '\u0085', nonTerminal, Semantic.NEWLINE); //NEXT Line NEL,
+        add(nonTerminal, '\u2028', nonTerminal, Semantic.NEWLINE); //Line Separator LS
+        add(nonTerminal, '\u2029', nonTerminal, Semantic.NEWLINE); //Paragraph separator PS
     }
 
     private void generateKeywordsRules2(Collection<String> group, NonTerminal nonTerminal, int position) {
         HashMap<Character, List<String>> nextGroups = new HashMap<>();
         boolean hasFinal = false;
         for (String kw : group) {
-            if (kw.length() < position) {
+            if (position < kw.length()) {
                 char ch = kw.charAt(position);
                 if (nextGroups.containsKey(ch)) {
                     nextGroups.get(ch).add(kw);
@@ -207,7 +219,7 @@ public class LexicalMatrix {
                 addFinal(nonTerminal, EMPTY_CHAR, keywordDictionary.getType(kw));
             }
         }
-        if (!hasFinal)
+        if (!hasFinal && !nonTerminal.equals(start))
             addFinal(nonTerminal, EMPTY_CHAR, TokenType.VAR_IDENTIFIER);
 
         Set<Character> usedCharacters = nextGroups.keySet();
@@ -221,37 +233,11 @@ public class LexicalMatrix {
 
         for (Character ch : usedCharacters) {
             List<String> nextCollection = nextGroups.get(ch);
-            NonTerminal nt = new NonTerminal(getKeywordTagName(nextCollection.get(0).substring(0, position)));
-            generateKeywordsRules2((Collection<String>) nextGroups, nt, position + 1);
-        }
-    }
-
-    private void generateKeywordRules(Collection<String> keywordGroup, NonTerminal nonTerminal, int position) {
-        HashMap<Character, List<String>> map = new HashMap<>();
-        for (String kw : keywordGroup) {
-            if (kw.length() >= position) {
-                if (kw.length() == position) {
-                    addFinal(nonTerminal, EMPTY_CHAR, keywordDictionary.getType(kw));
-                }
-
-                continue;
-            }
-
-            char ch = kw.charAt(position);
-            if (map.containsKey(ch))
-                map.get(ch).add(kw);
-            else {
-                List<String> ksw = new ArrayList<>();
-                ksw.add(kw);
-                map.put(ch, ksw);
-            }
-        }
-
-        for (Character ch : map.keySet()) {
-            List<String> keywordsGroup = map.get(ch);
-            NonTerminal nextNonTerminal = new NonTerminal(getKeywordTagName(keywordsGroup.get(0).substring(0, position)));
-            add(nonTerminal, ch, nextNonTerminal);
-            generateKeywordRules(keywordGroup, nextNonTerminal, position + 1);
+            NonTerminal nt = new NonTerminal(getKeywordTagName(nextCollection.get(0).substring(0, position + 1)));
+            Collection<String> n = new ArrayList<>();
+            add(nonTerminal, ch, nt);
+            n.addAll(nextCollection);
+            generateKeywordsRules2(n, nt, position + 1);
         }
     }
 
@@ -263,37 +249,6 @@ public class LexicalMatrix {
         return String.format("kw[%s]", name);
     }
 
-    private void fillKeywords(Set<String> keywords, NonTerminal parentTerminal, int seek, String name) {
-        Collection<Character> charsForPostion = new ArrayList<>(keywords.size());
-        Set<String> nextKeywords = new HashSet<>(keywords.size());
-        boolean hasFinal = false;
-        for (String k : keywords) {
-            if (k.length() > seek + 1) {
-                nextKeywords.add(k);
-                charsForPostion.add(k.charAt(seek));
-            } else {
-                hasFinal = true;
-                addFinal(parentTerminal, EMPTY_CHAR, keywordDictionary.getType(k));
-            }
-        }
-
-        if (!hasFinal) {
-            addFinal(parentTerminal, EMPTY_CHAR, TokenType.VAR_IDENTIFIER);
-        }
-
-        for (char alpha : ALPHABET) {
-            if (!charsForPostion.contains(alpha))
-                add(parentTerminal, alpha, varIdentifier, Semantic.NEWLINE);
-        }
-
-        for (Character ch : charsForPostion) {
-            String nextName = name + ch;
-            NonTerminal nonTerminal = new NonTerminal(getKeywordTagName(nextName));
-            add(parentTerminal, ch, nonTerminal, Semantic.NEWLINE);
-            fillKeywords(nextKeywords, nonTerminal, seek + 1, nextName);
-        }
-    }
-
 
     private void add(NonTerminal left, char terminalChar, NonTerminal right, Semantic newline) {
         Map<Character, Element> map;
@@ -302,6 +257,7 @@ public class LexicalMatrix {
         } else {
             map = new HashMap<>();
             lexicalMatrix.put(left, map);
+            fillSpaces(left);
         }
 
         if (map.containsKey(terminalChar)) {
@@ -323,6 +279,7 @@ public class LexicalMatrix {
         } else {
             map = new HashMap<>();
             lexicalMatrix.put(left, map);
+            fillSpaces(left);
         }
 
         if (map.containsKey(terminalChar)) {
