@@ -25,7 +25,7 @@ public class LexReader implements LexemReader {
             Token token = readOne();
             if (token == null) break;
             list.add(token);
-            if (token.type.equals(TokenType.EOF))
+            if (token.type.equals(TokenType.LAMBDA))
                 break;
         }
         return list;

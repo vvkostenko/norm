@@ -26,7 +26,7 @@ public class Syntaxer
         OPS ops = new OPS();
         Token token;
         token = lexer.readOne();
-        while(token != null && !token.getType().equals(TokenType.EOF))
+        while(token != null && !token.getType().equals(TokenType.LAMBDA))
         {
             stack.push(token);
             HandleLexem(lexer.readOne());
@@ -44,7 +44,7 @@ public class Syntaxer
     {
         LexemReader a = new LexemReader() {
             public Token readOne() {
-                return new Token().setType(TokenType.EOF).setValue("");
+                return new Token().setType(TokenType.LAMBDA).setValue("");
             }
 
             public List<Token> readMany(int count) {

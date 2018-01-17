@@ -2,12 +2,10 @@ package norm.NextGenSyntaxer;
 
 import norm.lexer.TokenType;
 
-import javax.management.MBeanException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.locks.Condition;
 
 public class SyntaxMap {
     public interface Element {
@@ -110,7 +108,7 @@ public class SyntaxMap {
     Term figuredBracClosed = new Term(TokenType.FIGURED_BRAKED_CLOSE, "}");
     Term ifKeyword = new Term(TokenType.KEYWORD, "if");
     Term elseKeyword = new Term(TokenType.KEYWORD, "else");
-    Term empty = new Term(TokenType.EOF, "EOF");
+    Term empty = new Term(TokenType.LAMBDA, "LAMBDA");
     Term ravno = new Term(TokenType.ASSIGNMENT_CONST, "=");
     Term doubleDot = new Term(TokenType.TWO_DOTS, ":");
     Term commaDot = new Term(TokenType.COMMA_DOT, ";");

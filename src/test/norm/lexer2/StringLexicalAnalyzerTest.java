@@ -35,7 +35,7 @@ public class StringLexicalAnalyzerTest {
 
         Token eofToken = reader.readOne();
         assertNotNull(eofToken);
-        assertEquals(eofToken.getType(), TokenType.EOF);
+        assertEquals(eofToken.getType(), TokenType.LAMBDA);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class StringLexicalAnalyzerTest {
             assertEquals(t.getType(),TokenType.ARIPHMETIC_CONSTANT);
             assertEquals(t.getValue(),String.valueOf(ch));
         }
-        assertEquals(reader.readOne().getType(), TokenType.EOF);
+        assertEquals(reader.readOne().getType(), TokenType.LAMBDA);
     }
 
     @Test

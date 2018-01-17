@@ -4,8 +4,6 @@ import norm.lexer.TokenType;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class GreibachTest {
         SyntaxMap.Term a = new SyntaxMap.Term(TokenType.VAR_IDENTIFIER, "a");
         SyntaxMap.Term rbo = new SyntaxMap.Term(TokenType.ROUND_BRAKED_OPEN, "(");
         SyntaxMap.Term rbc = new SyntaxMap.Term(TokenType.ROUND_BRAKED_CLOSE, ")");
-        SyntaxMap.Term empty = new SyntaxMap.Term(TokenType.EOF, "empty");
+        SyntaxMap.Term empty = new SyntaxMap.Term(TokenType.LAMBDA, "empty");
 
         SyntaxMap sampleRules = new SyntaxMap();
 

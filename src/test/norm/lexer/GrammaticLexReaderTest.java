@@ -23,11 +23,11 @@ public class GrammaticLexReaderTest {
         });
 
         Token eofToken = reader.readOne();
-        assertEquals(eofToken.type, TokenType.EOF);
+        assertEquals(eofToken.type, TokenType.LAMBDA);
         assertEquals(eofToken.value, "");
 
         Token repearEOF = reader.readOne();
-        assertEquals(repearEOF.type, TokenType.EOF);
+        assertEquals(repearEOF.type, TokenType.LAMBDA);
         assertEquals(repearEOF.value, "");
     }
 
@@ -42,7 +42,7 @@ public class GrammaticLexReaderTest {
             assertEquals(token.value, lexemString);
             //проверяем что всё полностью считал
             token = reader.readOne();
-            assertEquals(token.type, TokenType.EOF);
+            assertEquals(token.type, TokenType.LAMBDA);
             assertEquals(token.value, "");
         }
     }
@@ -57,7 +57,7 @@ public class GrammaticLexReaderTest {
             assertEquals(token.value, lexemString);
             //проверяем что всё полностью считал
             token = reader.readOne();
-            assertEquals(token.type, TokenType.EOF);
+            assertEquals(token.type, TokenType.LAMBDA);
             assertEquals(token.value, "");
         }
     }
@@ -73,7 +73,7 @@ public class GrammaticLexReaderTest {
             assertEquals(token.value, lexemString);
             //проверяем что всё полностью считал
             token = reader.readOne();
-            assertEquals(token.type, TokenType.EOF);
+            assertEquals(token.type, TokenType.LAMBDA);
             assertEquals(token.value, "");
         }
     }
@@ -89,7 +89,7 @@ public class GrammaticLexReaderTest {
             assertEquals(token.value, lexemString);
             //проверяем что всё полностью считал
             token = reader.readOne();
-            assertEquals(token.type, TokenType.EOF);
+            assertEquals(token.type, TokenType.LAMBDA);
             assertEquals(token.value, "");
         }
     }
@@ -105,7 +105,7 @@ public class GrammaticLexReaderTest {
             assertEquals(token.value, lexemString);
             //проверяем что всё полностью считал
             token = reader.readOne();
-            assertEquals(token.type, TokenType.EOF);
+            assertEquals(token.type, TokenType.LAMBDA);
             assertEquals(token.value, "");
         }
     }
@@ -119,7 +119,7 @@ public class GrammaticLexReaderTest {
 
         //проверяем что всё полностью считал
         token = reader.readOne();
-        assertEquals(token.type, TokenType.EOF);
+        assertEquals(token.type, TokenType.LAMBDA);
         assertEquals(token.value, "");
 
         reader = new LexReader(new StringStream(")"));
@@ -129,7 +129,7 @@ public class GrammaticLexReaderTest {
 
         //проверяем что всё полностью считал
         token = reader.readOne();
-        assertEquals(token.type, TokenType.EOF);
+        assertEquals(token.type, TokenType.LAMBDA);
         assertEquals(token.value, "");
 
         reader = new LexReader(new StringStream("{"));
@@ -139,7 +139,7 @@ public class GrammaticLexReaderTest {
 
         //проверяем что всё полностью считал
         token = reader.readOne();
-        assertEquals(token.type, TokenType.EOF);
+        assertEquals(token.type, TokenType.LAMBDA);
         assertEquals(token.value, "");
 
         reader = new LexReader(new StringStream("}"));
@@ -149,7 +149,7 @@ public class GrammaticLexReaderTest {
 
         //проверяем что всё полностью считал
         token = reader.readOne();
-        assertEquals(token.type, TokenType.EOF);
+        assertEquals(token.type, TokenType.LAMBDA);
         assertEquals(token.value, "");
     }
 
@@ -164,7 +164,7 @@ public class GrammaticLexReaderTest {
             assertEquals(token.value, lexemString);
             //проверяем что всё полностью считал
             token = reader.readOne();
-            assertEquals(token.type, TokenType.EOF);
+            assertEquals(token.type, TokenType.LAMBDA);
             assertEquals(token.value, "");
         }
     }
@@ -178,7 +178,7 @@ public class GrammaticLexReaderTest {
 
         //проверяем что всё полностью считал
         token = reader.readOne();
-        assertEquals(token.type, TokenType.EOF);
+        assertEquals(token.type, TokenType.LAMBDA);
         assertEquals(token.value, "");
 
         reader = new LexReader(new StringStream(";"));
@@ -188,7 +188,7 @@ public class GrammaticLexReaderTest {
 
         //проверяем что всё полностью считал
         token = reader.readOne();
-        assertEquals(token.type, TokenType.EOF);
+        assertEquals(token.type, TokenType.LAMBDA);
         assertEquals(token.value, "");
     }
 

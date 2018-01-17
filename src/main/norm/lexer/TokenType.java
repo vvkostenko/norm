@@ -82,7 +82,12 @@ public enum TokenType {
     NUMBER,
 
     /**
+     * Пустец
+     */
+    LAMBDA,
+
+    /*
      * Конец файла
      */
-    EOF
+    EOF,
 }

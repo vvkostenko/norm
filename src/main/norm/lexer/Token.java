@@ -2,7 +2,7 @@ package norm.lexer;
 
 public class Token {
 
-    private static  final Token eof = new Token(TokenType.EOF,"");
+    private static  final Token eof = new Token(TokenType.LAMBDA,"");
     TokenType type;
     String value;
 
