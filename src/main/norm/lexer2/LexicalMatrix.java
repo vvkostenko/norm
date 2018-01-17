@@ -17,7 +17,7 @@ public class LexicalMatrix {
         sb.append(" === Lexical Matrix ===\n");
         for (NonTerminal state : lexicalMatrix.keySet()) {
             sb.append(state).append(" => {");
-            for(Map.Entry<Character, Element>e : lexicalMatrix.get(state).entrySet()) {
+            for (Map.Entry<Character, Element> e : lexicalMatrix.get(state).entrySet()) {
                 sb.append(e.getKey()).append("=").append(e.getValue()).append(", ");
             }
             sb.append("},\n");
@@ -187,20 +187,67 @@ public class LexicalMatrix {
         //Имена переменных
         Set<Character> firstKeywordChars = keywordDictionary.getFirstChars();
         //Построение деревьев перехода
-        for (Character firstChar : firstKeywordChars) {
-            String name = getKeywordTagName(String.valueOf(firstChar));
-            NonTerminal generatedTerminal = new NonTerminal(name);
-            // S -> cA
-            add(start, firstChar, generatedTerminal, Semantic.NEWLINE);
-            Set<String> keywords = keywordDictionary.getFor(firstChar);
-            this.fillKeywords(keywords, generatedTerminal, 1, String.valueOf(firstChar));
-        }
+        generateKeywordRules(keywordDictionary.getAllKeywords(), start, 0);
 
         for (char ch : ALPHABET) {
             if (!firstKeywordChars.contains(ch) && !Character.isDigit(ch)) {
                 add(start, ch, varIdentifier, Semantic.NEWLINE);
             }
         }
+    }
+
+    private void generateKeywordsRules2(Collection<String> group, NonTerminal nonTerminal, int position) {
+        HashMap<Character, List<String>> nextGroups = new HashMap<>();
+        boolean hasFinal = false;
+        for (String kw : group) {
+            if (kw.length() > position)
+                continue;
+            else if (kw.length() == position) {
+                //прошли до конца
+            } else {
+                char ch = kw.charAt(position);
+                if (nextGroups.containsKey(ch)) {
+                    nextGroups.get(ch);
+                } else {
+                    List<String> ksw = new ArrayList<>();
+                    ksw.add(kw);
+                    nextGroups.put(ch, ksw);
+                }
+            }
+        }
+    }
+
+    private void generateKeywordRules(Collection<String> keywordGroup, NonTerminal nonTerminal, int position) {
+        HashMap<Character, List<String>> map = new HashMap<>();
+        for (String kw : keywordGroup) {
+            if (kw.length() >= position) {
+                if (kw.length() == position) {
+                    addFinal(nonTerminal, EMPTY_CHAR, keywordDictionary.getType(kw));
+                }
+
+                continue;
+            }
+
+            char ch = kw.charAt(position);
+            if (map.containsKey(ch))
+                map.get(ch).add(kw);
+            else {
+                List<String> ksw = new ArrayList<>();
+                ksw.add(kw);
+                map.put(ch, ksw);
+            }
+        }
+
+        for (Character ch : map.keySet()) {
+            List<String> keywordsGroup = map.get(ch);
+            NonTerminal nextNonTerminal = new NonTerminal(getKeywordTagName(keywordsGroup.get(0).substring(0, position)));
+            add(nonTerminal, ch, nextNonTerminal);
+            generateKeywordRules(keywordGroup, nextNonTerminal, position + 1);
+        }
+    }
+
+    private void add(NonTerminal left, Character terminalChar, NonTerminal right) {
+        add(left, terminalChar, right, null);
     }
 
     private String getKeywordTagName(String name) {
@@ -245,7 +292,7 @@ public class LexicalMatrix {
             map = lexicalMatrix.get(left);
         } else {
             map = new HashMap<>();
-            lexicalMatrix.put(left,map);
+            lexicalMatrix.put(left, map);
         }
 
         if (map.containsKey(terminalChar)) {
@@ -266,7 +313,7 @@ public class LexicalMatrix {
             map = lexicalMatrix.get(left);
         } else {
             map = new HashMap<>();
-            lexicalMatrix.put(left,map);
+            lexicalMatrix.put(left, map);
         }
 
         if (map.containsKey(terminalChar)) {
