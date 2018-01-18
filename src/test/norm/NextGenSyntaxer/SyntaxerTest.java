@@ -1,13 +1,8 @@
 package norm.NextGenSyntaxer;
 
-import norm.exception.LexemNotFound;
-import norm.exception.LexemNotResponsed;
-import norm.lexer.DummyLexer;
-import norm.lexer.Token;
-import norm.lexer.LexemReader;
-import norm.lexer.TokenType;
+import norm.lexer2.Token;
+import norm.lexer2.TokenType;
 import norm.ops.OPS;
-import norm.syntaxer.Syntaxer;
 import org.junit.Before;
 import org.junit.Test;
 

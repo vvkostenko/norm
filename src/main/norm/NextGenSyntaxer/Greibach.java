@@ -1,7 +1,5 @@
 package norm.NextGenSyntaxer;
 
-import norm.lexer.Token;
-
 import java.util.*;
 
 public class Greibach {

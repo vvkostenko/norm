@@ -1,4 +1,4 @@
-package norm.lexer;
+package norm.lexer2;
 
 import norm.exception.LexemNotFound;
 import norm.exception.LexemNotResponsed;

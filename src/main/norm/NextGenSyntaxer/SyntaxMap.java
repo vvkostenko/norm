@@ -1,6 +1,6 @@
 package norm.NextGenSyntaxer;
 
-import norm.lexer.TokenType;
+import norm.lexer2.TokenType;
 
 import java.util.*;
 

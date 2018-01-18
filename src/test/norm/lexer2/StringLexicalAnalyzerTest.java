@@ -2,20 +2,15 @@ package norm.lexer2;
 
 import norm.exception.LexemNotFound;
 import norm.exception.LexemNotResponsed;
-import norm.lexer.LexReader;
-import norm.lexer.LexemReader;
-import norm.lexer.Token;
-import norm.lexer.TokenType;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringJoiner;
 
 import static org.junit.Assert.*;
 
-import static norm.lexer.TokenType.*;
+import static norm.lexer2.TokenType.*;
 
 /**
  * Created by akim on 16.01.18.

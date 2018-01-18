@@ -1,6 +1,6 @@
 package norm.NextGenSyntaxer;
 
-import norm.lexer.Token;
+import norm.lexer2.Token;
 import norm.ops.OPS;
 
 import java.util.List;

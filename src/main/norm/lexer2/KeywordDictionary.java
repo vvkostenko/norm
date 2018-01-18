@@ -1,7 +1,5 @@
 package norm.lexer2;
 
-import norm.lexer.TokenType;
-
 import java.util.*;
 
 /**

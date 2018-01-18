@@ -1,6 +1,5 @@
 package norm.lexer2;
 
-import norm.lexer.TokenType;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

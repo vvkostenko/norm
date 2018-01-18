@@ -2,9 +2,6 @@ package norm.lexer2;
 
 import norm.exception.LexemNotFound;
 import norm.exception.LexemNotResponsed;
-import norm.lexer.LexemReader;
-import norm.lexer.Token;
-import norm.lexer.TokenType;
 
 import java.util.ArrayList;
 import java.util.List;

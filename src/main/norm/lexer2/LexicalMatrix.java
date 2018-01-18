@@ -2,7 +2,6 @@ package norm.lexer2;
 
 import norm.exception.DuplicateLexicalRule;
 import norm.exception.LexicalStateNotFound;
-import norm.lexer.TokenType;
 
 import java.util.*;
 

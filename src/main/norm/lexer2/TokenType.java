@@ -1,4 +1,4 @@
-package norm.lexer;
+package norm.lexer2;
 
 public enum TokenType {
     /**
