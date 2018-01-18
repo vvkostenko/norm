@@ -142,11 +142,11 @@ public class SyntaxMap {
     Term ravno = new Term(TokenType.ASSIGNMENT_CONST, "=");
     Term doubleDot = new Term(TokenType.TWO_DOTS, ":");
     Term commaDot = new Term(TokenType.COMMA_DOT, ";");
-    Term plus = new Term(TokenType.ASSIGNMENT_CONST, "+");
-    Term minus = new Term(TokenType.ASSIGNMENT_CONST, "-");
-    Term mod = new Term(TokenType.ASSIGNMENT_CONST, "%");
-    Term umnojito = new Term(TokenType.ASSIGNMENT_CONST, "*");
-    Term razdelitto = new Term(TokenType.ASSIGNMENT_CONST, "/");
+    Term plus = new Term(TokenType.ARIPHMETIC_CONSTANT, "+");
+    Term minus = new Term(TokenType.ARIPHMETIC_CONSTANT, "-");
+    Term mod = new Term(TokenType.ARIPHMETIC_CONSTANT, "%");
+    Term umnojito = new Term(TokenType.ARIPHMETIC_CONSTANT, "*");
+    Term razdelitto = new Term(TokenType.ARIPHMETIC_CONSTANT, "/");
     Term or = new Term(TokenType.BOOL_SIGN, "or");
     Term and = new Term(TokenType.BOOL_SIGN, "and");
     Term eq = new Term(TokenType.BOOL_SIGN, "eq");
