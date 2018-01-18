@@ -40,9 +40,10 @@ public class OpsItem {
         return item;
     }
 
-    public static OpsItem operation(Type type) {
+    public static OpsItem operation(Type type, Object value) {
         OpsItem item = new OpsItem();
         item.setType(type);
+        item.setValue(value);
         switch (type) {
             default:
                 throw new IllegalArgumentException("Неизвестный типа операции: " + type);
@@ -58,6 +59,8 @@ public class OpsItem {
                 item.argsCount = 2;
                 break;
             case JUMP:
+            case PRINT:
+            case SCAN:
                 item.argsCount = 1;
                 break;
 
@@ -79,12 +82,20 @@ public class OpsItem {
 
     public static OpsItem arrayIndex(String varId, Integer index) {
         return new OpsItem().setType(Type.ARRAY_INDEX).setValue(
-                new ArrayIndex(varId,index)
+                new ArrayIndex(varId, index)
         );
     }
 
     public static OpsItem assignment() {
-        return new OpsItem().setType(Type.ASSIGNMENT).setValue("=");
+        return new OpsItem().setType(Type.ASSIGNMENT).setValue("=").setArgsCount(2);
+    }
+
+    public static OpsItem print() {
+        return new OpsItem().setType(Type.PRINT).setArgsCount(1).setValue("out");
+    }
+
+    public static OpsItem scan() {
+        return new OpsItem().setType(Type.SCAN).setArgsCount(1).setValue("sc");
     }
 
 
@@ -105,11 +116,13 @@ public class OpsItem {
         NUMBER_COMPARING, // 2 arg
         ARRAY_INDEX, //2 arg
         INIT_VAR,  // 2 arg
-        ASSIGNMENT, // 2
+        ASSIGNMENT, // 2 arg
         JUMP, //1 arg (название метки)
         JUMP_TRUE, // 2 arg,
         JUMP_FALSE, // 2 arg
-        ARRAY_INIT,
+        ARRAY_INIT, //3 arg
+        PRINT, //1 arg
+        SCAN, //1 arg
     }
 
     public Type getType() {

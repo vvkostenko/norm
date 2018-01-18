@@ -20,4 +20,6 @@ public interface Scope {
     Map<String, List<Integer>> arrays();
 
     ManageOps manage();
+
+    boolean containsVariable(String varName);
 }

@@ -2,9 +2,11 @@ package norm.ops;
 
 import norm.exception.IllegalOPSArgument;
 import org.junit.Test;
+import utils.StringStream;
 
-import static norm.ops.OpsItem.ariphmeticSign;
-import static norm.ops.OpsItem.number;
+import java.io.BufferedInputStream;
+
+import static norm.ops.OpsItem.*;
 import static org.junit.Assert.*;
 
 /**
@@ -46,18 +48,36 @@ public class OPSTest {
     @Test
     public void testAssignment() throws Exception, IllegalOPSArgument {
         OPS ops = new OPS();
+        ops.setOutPrintStream(System.out);
+        ops.setInputStream(System.in);
+        ops.addRight(OpsItem.number(5));
         ops.addRight(OpsItem.var("a"));
-        ops.addRight(OpsItem.var("5"));
+
         ops.addRight(OpsItem.assignment());
+        ops.addRight(OpsItem.var("a"));
         ops.addRight(OpsItem.var("b"));
-        ops.addRight(OpsItem.var("a"));
         ops.addRight(OpsItem.assignment());
+        ops.addRight(OpsItem.var("a"));
+        ops.addRight(OpsItem.print());
         ops.start();
+        assertTrue(ops.getScope().containsVariable("a"));
+        assertTrue(ops.getScope().containsVariable("a"));
+        assertEquals(ops.getScope().manage().getVariableValue("a"), Integer.valueOf(5));
+        assertEquals(ops.getScope().manage().getVariableValue("b"), Integer.valueOf(5));
+    }
+
+
+    @Test
+    public void testInputOutput() throws Exception, IllegalOPSArgument {
+        OPS ops = new OPS();
+        ops.setOutPrintStream(System.out);
+        ops.setInputStream(new BufferedInputStream(new StringStream("123")));
+        ops.addRight(OpsItem.var("abb"));
+        ops.addRight(OpsItem.scan());
+        ops.addRight(OpsItem.var("abb"));
+        ops.addRight(OpsItem.print());
         ops.start();
-//        assertTrue(ops.getScope().containsVariable("a"));
-//        assertTrue(ops.getScope().containsVariable("a"));
-        assertEquals(ops.getScope().manage().getVariableValue("a"),Integer.valueOf(5));
-        assertEquals(ops.getScope().manage().getVariableValue("b"),Integer.valueOf(5));
+        assertTrue(ops.getScope().containsVariable("abb"));
     }
 
 }

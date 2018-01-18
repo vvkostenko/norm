@@ -13,6 +13,6 @@ public class VariableNotInitialized extends RuntimeException {
     }
 
     private static String makeStr(String varId, String firstWord) {
-        return firstWord + " " + varId + " не инстанцировано";
+        return firstWord + " '" + varId + "'. Отсутствует инициализация";
     }
 }

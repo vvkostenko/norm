@@ -6,6 +6,9 @@ import norm.exception.NotInitializedException;
 import norm.exception.VariableInitializedYet;
 import norm.exception.VariableNotInitialized;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.*;
 
 public class OPS {
@@ -22,6 +25,8 @@ public class OPS {
             return OPS.this.getVariableValue(OpsItem.arrayIndex(name, index)).intValue();
         }
     };
+    private PrintStream outInputStream;
+    private InputStream inputStream;
 
     public static void main(String[] args) throws Exception, IllegalOPSArgument {
         OPS ops = new OPS();
@@ -159,17 +164,49 @@ public class OPS {
                 break;
             }
 
+            case PRINT: {
+                checkType(current, args.get(0).getType(), OpsItem.Type.NUMBER, OpsItem.Type.VAR_IDENTIFIER, OpsItem.Type.ARRAY_INDEX);
+                this.printIt(args.get(0));
+                break;
+            }
+
+            case SCAN: {
+                checkType(current, args.get(0).getType(), OpsItem.Type.VAR_IDENTIFIER, OpsItem.Type.ARRAY_INDEX);
+                this.scan(args.get(0));
+                break;
+            }
+
 
             case ASSIGNMENT: {
                 checkType(current, args.get(0).getType(), OpsItem.Type.VAR_IDENTIFIER, OpsItem.Type.ARRAY_INDEX);
                 checkType(current, args.get(1).getType(), OpsItem.Type.NUMBER, OpsItem.Type.VAR_IDENTIFIER, OpsItem.Type.ARRAY_INDEX);
-                this.assignment(args.get(0),
-                        args.get(1)
-                );
+                this.assignment(args.get(0), args.get(1));
                 break;
             }
         }
 
+    }
+
+    private void scan(OpsItem varId) {
+        Scanner sc = new Scanner(inputStream);
+        System.out.println("Start scanning: " + varId);
+        while (!sc.hasNextInt()) {
+            System.out.println("W");
+        }
+        Number number = null;
+                number = sc.nextInt();
+        System.out.println("Scanned " + varId);
+        if (varId.getType().equals(OpsItem.Type.ARRAY_INDEX)) {
+            this.putArrayIndexValue((ArrayIndex) varId.getValue(), number.intValue());
+        } else {
+            this.putVariableValue(varId.getValue().toString(), number.intValue());
+        }
+    }
+
+    private void printIt(OpsItem item) {
+        Number value = getNumber(item);
+        if (outInputStream != null && value != null)
+            outInputStream.println("Печать:" + value);
     }
 
     private void arrayInit(String type, OpsItem size, String variableName) {
@@ -245,9 +282,9 @@ public class OPS {
         System.out.format("Присваивание %s=%s\n", varId, right.toString());
         Number number = getNumber(right);
         if (varId.getType().equals(OpsItem.Type.ARRAY_INDEX)) {
-            this.setArrayIndexValue((ArrayIndex) varId.getValue(), number.intValue());
+            this.putArrayIndexValue((ArrayIndex) varId.getValue(), number.intValue());
         } else {
-            this.setVariableValue(varId.getValue().toString(), number.intValue());
+            this.putVariableValue(varId.getValue().toString(), number.intValue());
         }
 
     }
@@ -255,23 +292,32 @@ public class OPS {
     private void setArrayIndexValue(ArrayIndex arrayIndex, int intValue) {
         Map<String, List<Integer>> arrays = getScope().arrays();
         if (arrays.containsKey(arrayIndex.getVar())) {
-            int index = arrayIndex.getIndex();
-            List<Integer> array = arrays.get(arrayIndex.getVar());
-            if (array.size() > index) {
-                array.set(index, intValue);
-            } else {
-                throw new ArrayIndexOutOfBoundsException("Вы вышли за границы массива " + arrayIndex.getVar() + "[" + index + "]");
-            }
+            putArrayIndexValue(arrayIndex, intValue);
         } else {
             throw new VariableNotInitialized(arrayIndex.getVar(), "Массив");
         }
     }
 
+    private void putArrayIndexValue(ArrayIndex arrayIndex, int intValue) {
+        Map<String, List<Integer>> arrays = getScope().arrays();
+        int index = arrayIndex.getIndex();
+        List<Integer> array = arrays.get(arrayIndex.getVar());
+        if (array.size() > index) {
+            array.set(index, intValue);
+        } else {
+            throw new ArrayIndexOutOfBoundsException("Вы вышли за границы массива " + arrayIndex.getVar() + "[" + index + "]");
+        }
+    }
+
     private void setVariableValue(String varId, int value) {
         if (getScope().variables().containsKey(varId))
-            getScope().variables().put(varId, value);
+            putVariableValue(varId, value);
         else
             throw new VariableNotInitialized(varId);
+    }
+
+    private void putVariableValue(String varId, int value) {
+        getScope().variables().put(varId, value);
     }
 
     private Number getNumber(OpsItem item) {
@@ -402,6 +448,11 @@ public class OPS {
                 public ManageOps manage() {
                     return manage;
                 }
+
+                @Override
+                public boolean containsVariable(String varName) {
+                    return variables().containsKey(varName);
+                }
             };
         }
         return scope;
@@ -454,5 +505,13 @@ public class OPS {
 
     public void start() throws Exception, IllegalOPSArgument {
         while (!this.move()) ;
+    }
+
+    public void setOutPrintStream(PrintStream out) {
+        this.outInputStream = out;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
     }
 }
