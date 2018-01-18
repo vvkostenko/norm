@@ -17,6 +17,7 @@ import norm.ops.OPS;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by akim on 18.01.18.
@@ -25,7 +26,17 @@ public class Norm {
 
     public static void main(String[] args) {
         Norm norm = new Norm();
-        norm.runIt("5+5*10");
+        do {
+            System.out.println();
+            System.out.println("Enter program by lines: ");
+            Scanner sc = new Scanner(System.in);
+            try {
+                norm.runIt(sc.nextLine());
+            }catch (Throwable e) {
+                System.err.println(e.getMessage());
+            }
+        } while (true);
+        //
 
     }
 
