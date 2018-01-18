@@ -1,10 +1,11 @@
 package norm.NextGenSyntaxer;
 
 import norm.lexer.Token;
+import norm.ops.OPS;
 
 import java.util.List;
 
 public interface SyntaxerBase {
     void readOne();
-    boolean generateTree(List<Token> tokens);
+    OPS generateTree(List<Token> tokens);
 }

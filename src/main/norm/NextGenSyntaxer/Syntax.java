@@ -2,6 +2,9 @@ package norm.NextGenSyntaxer;
 
 import norm.lexer.Token;
 import norm.lexer.TokenType;
+import norm.lexer2.LexicalMatrix;
+import norm.lexer2.NonTerminal;
+import norm.ops.OPS;
 
 import java.util.*;
 
@@ -12,6 +15,10 @@ public class Syntax implements SyntaxerBase {
 
     public Syntax(HashMap<SyntaxMap.Element, List<Rule>> rulesBase) {
         rules = Greibach.convert(rulesBase);
+    }
+
+    public Syntax(Map<NonTerminal, Map<Character, LexicalMatrix.Element>> lexicalMatrix) {
+
     }
 
     public void readOne() {
@@ -50,7 +57,7 @@ public class Syntax implements SyntaxerBase {
         return rule;
     }
 
-    public boolean generateTree(List<Token> tokens) {
+    public OPS generateTree(List<Token> tokens) {
         stack.push(new SyntaxMap.NonTerm("S"));
 
         while (!stack.empty()) {

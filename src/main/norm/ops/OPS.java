@@ -11,6 +11,17 @@ import java.util.*;
 public class OPS {
 
     private Map<String, List<Integer>> arraysMap = new HashMap<>();
+    private ManageOps manage = new ManageOps() {
+        @Override
+        public Integer getVariableValue(String name) {
+            return OPS.this.getVariableValue(OpsItem.var(name)).intValue();
+        }
+
+        @Override
+        public Integer getArrayValue(String name, Integer index) {
+            return OPS.this.getVariableValue(OpsItem.arrayIndex(name, index)).intValue();
+        }
+    };
 
     public static void main(String[] args) throws Exception, IllegalOPSArgument {
         OPS ops = new OPS();
@@ -171,9 +182,11 @@ public class OPS {
     }
 
     private void ariphmetic(OpsItem current, OpsItem item, OpsItem item1) {
+
         Number left = getNumber(item);
         Number right = getNumber(item1);
         Number result = 0;
+        System.out.println(left + current.getValue().toString() + right);
         switch (current.getValue().toString()) {
             case "+":
                 result = left.intValue() + right.intValue();
@@ -337,9 +350,9 @@ public class OPS {
         scope.variables().put(name, 0);
     }
 
-    private void jumpTo(String label, Boolean state) {
-        System.out.format("Прыжок к %s %s\n", label, state ? "произойдёт" : "не произойдёт");
-        if (state) {
+    private void jumpTo(String label, Boolean doOrNot) {
+        System.out.format("Прыжок к %s %s\n", label, doOrNot ? "произойдёт" : "не произойдёт");
+        if (doOrNot) {
             Scope scope = getScope();
             if (!scope.labels().containsKey(label)) {
                 throw new RuntimeException("Неизвестная метка: " + label);
@@ -351,9 +364,10 @@ public class OPS {
         }
     }
 
-    private Scope getScope() {
+    public Scope getScope() {
         if (scope == null) {
             scope = new Scope() {
+
                 @Override
                 public Map<String, Integer> variables() {
                     return variablesMap;
@@ -382,6 +396,11 @@ public class OPS {
                 @Override
                 public Map<String, List<Integer>> arrays() {
                     return arraysMap;
+                }
+
+                @Override
+                public ManageOps manage() {
+                    return manage;
                 }
             };
         }
@@ -431,5 +450,9 @@ public class OPS {
 
     public Object removeMagazinTop() {
         return magazin.peek().getValue();
+    }
+
+    public void start() throws Exception, IllegalOPSArgument {
+        while (!this.move()) ;
     }
 }

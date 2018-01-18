@@ -18,4 +18,6 @@ public interface Scope {
     void setScopeForPosition(Integer position);
 
     Map<String, List<Integer>> arrays();
+
+    ManageOps manage();
 }

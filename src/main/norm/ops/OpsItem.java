@@ -83,6 +83,10 @@ public class OpsItem {
         );
     }
 
+    public static OpsItem assignment() {
+        return new OpsItem().setType(Type.ASSIGNMENT).setValue("=");
+    }
+
 
     public enum Type {
         // Operands

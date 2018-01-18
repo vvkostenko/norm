@@ -3,6 +3,8 @@ package norm.ops;
 import norm.exception.IllegalOPSArgument;
 import org.junit.Test;
 
+import static norm.ops.OpsItem.ariphmeticSign;
+import static norm.ops.OpsItem.number;
 import static org.junit.Assert.*;
 
 /**
@@ -15,14 +17,47 @@ public class OPSTest {
         OPS ops = new OPS();
         int a = 5;
         int b = 10;
-        ops.addRight(OpsItem.number(a));
-        ops.addRight(OpsItem.number(b));
+        ops.addRight(number(a));
+        ops.addRight(number(b));
         ops.addRight(OpsItem.ariphmeticSign("+"));
         assertFalse(ops.move());
         assertFalse(ops.move());
         assertFalse(ops.move());
         assertTrue(ops.move());
         assertEquals(ops.getMagazinTop(), a + b);
+    }
+
+    @Test
+    public void testAriphmetic() throws Exception, IllegalOPSArgument {
+        OPS ops = new OPS();
+        //3 2 1 * + == (2*1) + 3
+        int a = 3;
+        int b = 2;
+        int c = 1;
+        ops.addRight(number(a));
+        ops.addRight(number(b));
+        ops.addRight(number(c));
+        ops.addRight(ariphmeticSign("*"));
+        ops.addRight(ariphmeticSign("+"));
+        ops.start();
+        assertEquals(ops.getMagazinTop(), b * c + a);
+    }
+
+    @Test
+    public void testAssignment() throws Exception, IllegalOPSArgument {
+        OPS ops = new OPS();
+        ops.addRight(OpsItem.var("a"));
+        ops.addRight(OpsItem.var("5"));
+        ops.addRight(OpsItem.assignment());
+        ops.addRight(OpsItem.var("b"));
+        ops.addRight(OpsItem.var("a"));
+        ops.addRight(OpsItem.assignment());
+        ops.start();
+        ops.start();
+//        assertTrue(ops.getScope().containsVariable("a"));
+//        assertTrue(ops.getScope().containsVariable("a"));
+        assertEquals(ops.getScope().manage().getVariableValue("a"),Integer.valueOf(5));
+        assertEquals(ops.getScope().manage().getVariableValue("b"),Integer.valueOf(5));
     }
 
 }
