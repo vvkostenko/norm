@@ -5,6 +5,7 @@ import norm.lexer.TokenType;
 import norm.lexer2.LexicalMatrix;
 import norm.lexer2.NonTerminal;
 import norm.ops.OPS;
+import norm.ops.OpsItem;
 
 import java.util.*;
 
@@ -12,6 +13,7 @@ public class Syntax implements SyntaxerBase {
 
     HashMap<SyntaxMap.Element, List<Rule>> rules;
     Stack<SyntaxMap.Element> stack = new Stack<>();
+    List<OpsItem> OPS = new LinkedList<>();
 
     public Syntax(HashMap<SyntaxMap.Element, List<Rule>> rulesBase) {
         rules = Greibach.convert(rulesBase);
@@ -32,7 +34,6 @@ public class Syntax implements SyntaxerBase {
         for (int i = 0; i < currentRules.size(); ++i) {
             TokenType curr = ((SyntaxMap.Term)currentRules.get(i).get(0)).getType();
             if (curr.equals(nextSymbol.getType())) {
-//                boolean accepted = false;
                 if(curr.equals(TokenType.KEYWORD) || curr.equals(TokenType.TYPE))
                 {
                     if(((SyntaxMap.Term)currentRules.get(i).get(0)).value().equals(nextSymbol.getValue()))
@@ -42,11 +43,9 @@ public class Syntax implements SyntaxerBase {
                     }
                     continue;
                 }
-
                 rule = currentRules.get(i);
                 break;
             }
-
             if (i == currentRules.size() - 1)
                 fail = true;
         }
@@ -59,7 +58,6 @@ public class Syntax implements SyntaxerBase {
 
     public OPS generateTree(List<Token> tokens) {
         stack.push(new SyntaxMap.NonTerm("S"));
-
         while (!stack.empty()) {
             SyntaxMap.Element stackTop = stack.pop();
             Token nextSymbol = new Token();
@@ -79,9 +77,6 @@ public class Syntax implements SyntaxerBase {
                 if (currentRule == null)
                     throw new RuntimeException("Цепочка не распознана");
 
-//                if(currentRule.get(0).type == TokenType.LAMBDA)
-//                    continue;
-
                 for (int i = currentRule.size() - 1; i >= 0; --i){
                     stack.push(currentRule.get(i));
                 }
@@ -98,11 +93,10 @@ public class Syntax implements SyntaxerBase {
                 throw new RuntimeException("Продам гараж");
             }
         }
-
         if (!stack.isEmpty() || !tokens.isEmpty())
             throw new RuntimeException("Цепочка не распознана");
 
-        return null;
+        return new OPS();
     }
 
     static public void main(String[] args) {
