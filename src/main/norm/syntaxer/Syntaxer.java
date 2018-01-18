@@ -5,6 +5,7 @@ import norm.exception.LexemNotResponsed;
 import norm.lexer.Token;
 import norm.lexer.LexemReader;
 import norm.lexer.TokenType;
+import norm.ops.OPS;
 
 import java.util.*;
 

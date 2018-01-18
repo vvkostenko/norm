@@ -28,7 +28,7 @@ public class LexicalMatrix {
         add(start, ',', responsed, TokenType.COMMA);
         add(start, '=', responsed, TokenType.ASSIGNMENT_CONST);
 
-        //ARIPHMETIC
+        //ARIPHMETIC_SIGN
         add(start, '+', responsed, TokenType.ARIPHMETIC_CONSTANT);
         add(start, '-', responsed, TokenType.ARIPHMETIC_CONSTANT);
         add(start, '*', responsed, TokenType.ARIPHMETIC_CONSTANT);
