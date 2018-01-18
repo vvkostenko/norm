@@ -1,4 +1,4 @@
-package norm.lexer2;
+package norm.lexer;
 
 /**
  * Created by akim on 15.01.18.

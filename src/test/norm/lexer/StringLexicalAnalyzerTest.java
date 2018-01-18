@@ -1,4 +1,4 @@
-package norm.lexer2;
+package norm.lexer;
 
 import norm.exception.LexemNotFound;
 import norm.exception.LexemNotResponsed;
@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-import static norm.lexer2.TokenType.*;
+import static norm.lexer.TokenType.*;
 
 /**
  * Created by akim on 16.01.18.

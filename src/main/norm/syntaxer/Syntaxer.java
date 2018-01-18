@@ -2,9 +2,9 @@ package norm.syntaxer;
 
 import norm.exception.LexemNotFound;
 import norm.exception.LexemNotResponsed;
-import norm.lexer2.Token;
-import norm.lexer2.LexemReader;
-import norm.lexer2.TokenType;
+import norm.lexer.Token;
+import norm.lexer.LexemReader;
+import norm.lexer.TokenType;
 import norm.ops.OPS;
 
 import java.util.*;

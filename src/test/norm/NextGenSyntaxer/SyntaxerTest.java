@@ -1,7 +1,7 @@
 package norm.NextGenSyntaxer;
 
-import norm.lexer2.Token;
-import norm.lexer2.TokenType;
+import norm.lexer.Token;
+import norm.lexer.TokenType;
 import norm.ops.OPS;
 import org.junit.Before;
 import org.junit.Test;

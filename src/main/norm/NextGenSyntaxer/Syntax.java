@@ -1,9 +1,9 @@
 package norm.NextGenSyntaxer;
 
-import norm.lexer2.Token;
-import norm.lexer2.TokenType;
-import norm.lexer2.LexicalMatrix;
-import norm.lexer2.NonTerminal;
+import norm.lexer.Token;
+import norm.lexer.TokenType;
+import norm.lexer.LexicalMatrix;
+import norm.lexer.NonTerminal;
 import norm.ops.OPS;
 import norm.ops.OpsItem;
 

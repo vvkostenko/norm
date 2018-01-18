@@ -5,11 +5,11 @@ import norm.NextGenSyntaxer.Rule;
 import norm.NextGenSyntaxer.Syntax;
 import norm.NextGenSyntaxer.SyntaxMap;
 import norm.exception.IllegalOPSArgument;
-import norm.lexer2.LexemReader;
-import norm.lexer2.Token;
-import norm.lexer2.TokenType;
-import norm.lexer2.LexicalMatrix;
-import norm.lexer2.StringLexicalAnalyzer;
+import norm.lexer.LexemReader;
+import norm.lexer.Token;
+import norm.lexer.TokenType;
+import norm.lexer.LexicalMatrix;
+import norm.lexer.StringLexicalAnalyzer;
 import norm.ops.OPS;
 
 import java.util.HashMap;

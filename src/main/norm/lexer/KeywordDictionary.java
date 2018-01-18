@@ -1,4 +1,4 @@
-package norm.lexer2;
+package norm.lexer;
 
 import java.util.*;
 
