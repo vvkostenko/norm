@@ -102,7 +102,7 @@ public class Syntax implements SyntaxerBase {
         if (!stack.isEmpty() || !tokens.isEmpty())
             throw new RuntimeException("Цепочка не распознана");
 
-        return true;
+        return null;
     }
 
     static public void main(String[] args) {
@@ -134,6 +134,6 @@ public class Syntax implements SyntaxerBase {
                 //new Token(TokenType.LAMBDA, "")
         ));
 
-        boolean kek = s.generateTree(chain);
+        OPS kek = s.generateTree(chain);
     }
 }

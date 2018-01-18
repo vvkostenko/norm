@@ -51,6 +51,7 @@ public class Norm {
                 chain.addLast(token);
                 token = reader.readOne();
             }
+            System.out.println(chain);
             OPS ops = s.generateTree(chain);
             ops.start();
             System.out.println("Magazine top: " + ops.getMagazinTop());
