@@ -44,23 +44,35 @@ public class Syntax implements SyntaxerBase {
 
         while (!stack.empty()) {
             SyntaxMap.Element stackTop = stack.pop();
-            Token nextSymbol = tokens.get(0);
+            Token nextSymbol = new Token();
+
+            if(tokens.size() > 0)
+                nextSymbol = tokens.get(0);
 
             if (!stackTop.isTerm()) {
                 Rule currentRule = findRule(rules.get(stackTop), nextSymbol);
 
-                if (currentRule == null)
+                if (currentRule == null) {
                     currentRule = findRule(rules.get(stackTop), new Token(TokenType.LAMBDA, ""));
+                    if(currentRule != null)
+                        continue;
+                }
 
                 if (currentRule == null)
                     throw new RuntimeException("Цепочка не распознана");
 
-                for (int i = currentRule.size() - 1; i >= 0; --i)
+//                if(currentRule.get(0).type == TokenType.LAMBDA)
+//                    continue;
+
+                for (int i = currentRule.size() - 1; i >= 0; --i){
                     stack.push(currentRule.get(i));
+                }
+
             } else if (stackTop.isTerm()) {
                 TokenType type = ((SyntaxMap.Term) stackTop).getType();
-                if (nextSymbol.getType().equals(type)) {
-                    tokens.remove(0);
+                if(nextSymbol.getType() != null)
+                    if (nextSymbol.getType().equals(type)) {
+                        tokens.remove(0);
                 } else {
                     throw new RuntimeException("Цепочка не распознана");
                 }
@@ -84,12 +96,22 @@ public class Syntax implements SyntaxerBase {
 
         LinkedList<Token> chain = new LinkedList<>();
         chain.addAll(Arrays.asList(
+                new Token(TokenType.KEYWORD, "if"),
+                new Token(TokenType.BOOL_CONSTANT, "true"),
+                new Token(TokenType.TWO_DOTS, ":"),
+                new Token(TokenType.FIGURED_BRAKED_OPEN, "("),
                 new Token(TokenType.VAR_IDENTIFIER, "a"),
                 new Token(TokenType.ASSIGNMENT_CONST, "="),
                 new Token(TokenType.VAR_IDENTIFIER, "b"),
-//                new Token(TokenType.ARIPHMETIC_CONSTANT, "+"),
+                new Token(TokenType.COMMA_DOT, ";"),
+                new Token(TokenType.FIGURED_BRAKED_CLOSE, "}")
+//                new Token(TokenType.ROUND_BRAKED_OPEN, "("),
+//                new Token(TokenType.TYPE, "int"),
+//                new Token(TokenType.COMMA, ","),
+//                new Token(TokenType.NUMBER, "3"),
+//                new Token(TokenType.ROUND_BRAKED_CLOSE, ")"),
 //                new Token(TokenType.VAR_IDENTIFIER, "c"),
-                new Token(TokenType.COMMA_DOT, ";")
+                //new Token(TokenType.LAMBDA, "")
         ));
 
         boolean kek = s.generateTree(chain);

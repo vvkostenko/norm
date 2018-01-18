@@ -6,7 +6,7 @@ public class Token {
     TokenType type;
     String value;
 
-    public Token(){}
+    public Token(){ type = null; }
 
     public Token(TokenType type, String value)
     {
