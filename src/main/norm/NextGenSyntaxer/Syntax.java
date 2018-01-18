@@ -25,6 +25,17 @@ public class Syntax implements SyntaxerBase {
         for (int i = 0; i < currentRules.size(); ++i) {
             TokenType curr = ((SyntaxMap.Term)currentRules.get(i).get(0)).getType();
             if (curr.equals(nextSymbol.getType())) {
+//                boolean accepted = false;
+                if(curr.equals(TokenType.KEYWORD) || curr.equals(TokenType.TYPE))
+                {
+                    if(((SyntaxMap.Term)currentRules.get(i).get(0)).value().equals(nextSymbol.getValue()))
+                    {
+                        rule = currentRules.get(i);
+                        break;
+                    }
+                    continue;
+                }
+
                 rule = currentRules.get(i);
                 break;
             }
@@ -104,13 +115,15 @@ public class Syntax implements SyntaxerBase {
                 new Token(TokenType.ASSIGNMENT_CONST, "="),
                 new Token(TokenType.VAR_IDENTIFIER, "b"),
                 new Token(TokenType.COMMA_DOT, ";"),
-                new Token(TokenType.FIGURED_BRAKED_CLOSE, "}")
-//                new Token(TokenType.ROUND_BRAKED_OPEN, "("),
-//                new Token(TokenType.TYPE, "int"),
-//                new Token(TokenType.COMMA, ","),
-//                new Token(TokenType.NUMBER, "3"),
-//                new Token(TokenType.ROUND_BRAKED_CLOSE, ")"),
-//                new Token(TokenType.VAR_IDENTIFIER, "c"),
+                new Token(TokenType.FIGURED_BRAKED_CLOSE, "}"),
+                new Token(TokenType.KEYWORD, "array"),
+                new Token(TokenType.ROUND_BRAKED_OPEN, "("),
+                new Token(TokenType.TYPE, "int"),
+                new Token(TokenType.COMMA, ","),
+                new Token(TokenType.NUMBER, "3"),
+                new Token(TokenType.ROUND_BRAKED_CLOSE, ")"),
+                new Token(TokenType.VAR_IDENTIFIER, "c"),
+                new Token(TokenType.COMMA_DOT, ";")
                 //new Token(TokenType.LAMBDA, "")
         ));
 
