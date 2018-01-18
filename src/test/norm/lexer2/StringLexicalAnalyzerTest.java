@@ -251,4 +251,40 @@ public class StringLexicalAnalyzerTest {
         assertEquals(reader.readOne(), tt(BOOL_SIGN, "or"));
         assertEquals(reader.readOne(), tt(BOOL_CONSTANT, "true"));
     }
+
+    @Test
+    public void bigProblem() throws LexemNotFound, LexemNotResponsed {
+        LexemReader reader = new StringLexicalAnalyzer(lexicalMatrix, "" +
+                "if 72 > radius : { radius = 72; }else: { radius = 24; } \n a = 15; b = b + 16; \n ");
+        assertEquals(reader.readOne(), tt(KEYWORD, "if"));
+        assertEquals(reader.readOne(), tt(NUMBER, "72"));
+        assertEquals(reader.readOne(), tt(COMPARE_SIGN, ">"));
+        assertEquals(reader.readOne(), tt(VAR_IDENTIFIER, "radius"));
+        assertEquals(reader.readOne(), tt(TWO_DOTS, ":"));
+        assertEquals(reader.readOne(), tt(FIGURED_BRAKED_OPEN, "{"));
+        assertEquals(reader.readOne(), tt(VAR_IDENTIFIER, "radius"));
+        assertEquals(reader.readOne(), tt(ASSIGNMENT_CONST, "="));
+        assertEquals(reader.readOne(), tt(NUMBER, "72"));
+        assertEquals(reader.readOne(), tt(COMMA_DOT, ";"));
+        assertEquals(reader.readOne(), tt(FIGURED_BRAKED_CLOSE, "}"));
+        assertEquals(reader.readOne(), tt(KEYWORD, "else"));
+        assertEquals(reader.readOne(), tt(TWO_DOTS, ":"));
+        assertEquals(reader.readOne(), tt(FIGURED_BRAKED_OPEN, "{"));
+        assertEquals(reader.readOne(), tt(VAR_IDENTIFIER, "radius"));
+        assertEquals(reader.readOne(), tt(ASSIGNMENT_CONST, "="));
+        assertEquals(reader.readOne(), tt(NUMBER, "24"));
+        assertEquals(reader.readOne(), tt(COMMA_DOT, ";"));
+        assertEquals(reader.readOne(), tt(FIGURED_BRAKED_CLOSE, "}"));
+        assertEquals(reader.readOne(), tt(VAR_IDENTIFIER, "a"));
+        assertEquals(reader.readOne(), tt(ASSIGNMENT_CONST,"="));
+        assertEquals(reader.readOne(), tt(NUMBER, "15"));
+        assertEquals(reader.readOne(), tt(COMMA_DOT, ";"));
+        assertEquals(reader.readOne(), tt(VAR_IDENTIFIER, "b"));
+        assertEquals(reader.readOne(), tt(ASSIGNMENT_CONST,"="));
+        assertEquals(reader.readOne(), tt(VAR_IDENTIFIER, "b"));
+        assertEquals(reader.readOne(), tt(ARIPHMETIC_CONSTANT, "+"));
+        assertEquals(reader.readOne(), tt(NUMBER, "16"));
+        assertEquals(reader.readOne(), tt(COMMA_DOT, ";"));
+
+    }
 }
